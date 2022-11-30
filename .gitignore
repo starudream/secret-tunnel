@@ -1,0 +1,16 @@
+# Jetbrains
+.idea/
+
+# Dist
+bin/
+
+# Config
+config.yaml
+
+# Database
+db.sqlite
+
+# Test
+run-c1.sh
+run-c2.sh
+run-s.sh
