@@ -11,7 +11,7 @@ import (
 	"github.com/starudream/go-lib/log"
 
 	"github.com/starudream/secret-tunnel/constant"
-	"github.com/starudream/secret-tunnel/pool"
+	"github.com/starudream/secret-tunnel/internal/pool"
 )
 
 func Copy(c1, c2 io.ReadWriteCloser) (in int64, out int64) {

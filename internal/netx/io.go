@@ -4,7 +4,7 @@ import (
 	"io"
 	"sync"
 
-	"github.com/starudream/secret-tunnel/pool"
+	"github.com/starudream/secret-tunnel/internal/pool"
 )
 
 type ReadWriteCloser struct {
