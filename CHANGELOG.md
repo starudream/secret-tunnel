@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.2](https://github.com/starudream/secret-tunnel/compare/v1.1.1...v1.1.2) (2022-12-01)
+
+
+### Bug Fixes
+
+* **client:** fix service ([4ad9345](https://github.com/starudream/secret-tunnel/commit/4ad9345940fd1129a26dcc25102a0d6f1280ea1f))
+
 ## [1.1.1](https://github.com/starudream/secret-tunnel/compare/v1.1.0...v1.1.1) (2022-12-01)
 
 
