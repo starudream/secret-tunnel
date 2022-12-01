@@ -137,15 +137,18 @@ curl \
 ### Client
 
 ```shell
-stc --addr='127.0.0.1:9797' --key='fb9a318168714565993f75b97e6af907'
+stc --addr 127.0.0.1:9797 --key fb9a318168714565993f75b97e6af907
 ```
 
 ```shell
-stc service install --user --addr='127.0.0.1:9797' --key='fb9a318168714565993f75b97e6af907'
+stc service --user install --addr 127.0.0.1:9797 --key fb9a318168714565993f75b97e6af907
+stc service --user start
+stc service --user stop
+stc service --user uninstall
 ```
 
 ```shell
-stc --addr='127.0.0.1:9797' --key='ef335f0c7a9643d19d06591672576f46' --tasks='[{"address":":2222","secret":"aeb46c771cab4087a6c3fba4ef306472"}]'
+stc --addr 127.0.0.1:9797 --key ef335f0c7a9643d19d06591672576f46 --tasks '[{"address":":2222","secret":"aeb46c771cab4087a6c3fba4ef306472"}]'
 ```
 
 ### Data Transfer

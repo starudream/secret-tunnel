@@ -12,6 +12,7 @@ import (
 
 	"github.com/starudream/go-lib/app"
 	"github.com/starudream/go-lib/config"
+	"github.com/starudream/go-lib/log"
 
 	"github.com/starudream/secret-tunnel/client"
 	"github.com/starudream/secret-tunnel/constant"
@@ -130,7 +131,13 @@ type iService struct {
 var _ service.Interface = (*iService)(nil)
 
 func (p *iService) Start(_ service.Service) error {
-	return client.Start(context.Background())
+	go func() {
+		err := client.Start(context.Background())
+		if err != nil {
+			log.Fatal().Msgf("client init error: %v", err)
+		}
+	}()
+	return nil
 }
 
 func (p *iService) Stop(_ service.Service) error {
