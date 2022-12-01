@@ -16,22 +16,19 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:     constant.AppName,
+	Use:     "server",
 	Version: constant.VERSION + " (" + constant.BIDTIME + ")",
-	RunE: func(cmd *cobra.Command, args []string) error {
+	Run: func(cmd *cobra.Command, args []string) {
 		app.Init(model.Init)
 		app.Add(api.Start, server.Start)
 		err := app.OnceGo()
 		if err != nil {
 			log.Error().Msgf("server init error: %v", err)
 		}
-		return nil
 	},
 }
 
 func init() {
-	rootCmd.PersistentFlags().BoolP("version", "v", false, "version of "+constant.AppName)
-
 	rootCmd.PersistentFlags().String("addr", "0.0.0.0:9797", "server address")
 	_ = config.BindPFlag("addr", rootCmd.PersistentFlags().Lookup("addr"))
 

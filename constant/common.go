@@ -15,7 +15,9 @@ var (
 )
 
 const (
-	AppName = "secret-tunnel"
+	Name       = "SecretTunnel"
+	DarwinName = "cn.starudream." + Name
+	GitHub     = "https://github.com/starudream/secret-tunnel"
 
 	MessageSize = math.MaxInt16
 

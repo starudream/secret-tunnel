@@ -14,22 +14,21 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:     constant.AppName,
+	Use:     "client",
 	Version: constant.VERSION + " (" + constant.BIDTIME + ")",
-	RunE: func(cmd *cobra.Command, args []string) error {
+	Run: func(cmd *cobra.Command, args []string) {
 		app.Add(client.Start)
 		err := app.OnceGo()
 		if err != nil {
 			log.Error().Msgf("client init error: %v", err)
 		}
-		return nil
 	},
 }
 
 func init() {
-	rootCmd.PersistentFlags().BoolP("version", "v", false, "version of "+constant.AppName)
+	rootCmd.AddCommand(serviceCmd)
 
-	rootCmd.PersistentFlags().String("addr", "", "server address")
+	rootCmd.PersistentFlags().String("addr", "127.0.0.1:9797", "server address")
 	_ = config.BindPFlag("addr", rootCmd.PersistentFlags().Lookup("addr"))
 
 	rootCmd.PersistentFlags().String("key", "", "auth key")
