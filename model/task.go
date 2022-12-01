@@ -25,7 +25,7 @@ func UpdateTask(task *Task) (*Task, error) {
 }
 
 func UpdateTaskActive(id uint, active bool) error {
-	return _db.Where("id = ?", id).Update("active", active).Error
+	return _db.Model(&Task{}).Where("id = ?", id).Update("active", active).Error
 }
 
 func GetTaskById(id uint) (*Task, error) {

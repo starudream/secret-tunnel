@@ -13,6 +13,7 @@ require (
 )
 
 require (
+	github.com/brianvoe/gofakeit/v6 v6.19.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/glebarez/go-sqlite v1.19.5 // indirect

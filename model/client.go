@@ -29,7 +29,7 @@ func UpdateClient(client *Client) (*Client, error) {
 }
 
 func UpdateClientActive(id uint, active bool) error {
-	return _db.Where("id = ?", id).Update("active", active).Error
+	return _db.Model(&Client{}).Where("id = ?", id).Update("active", active).Error
 }
 
 func UpdateClientOnline(client *Client) error {
