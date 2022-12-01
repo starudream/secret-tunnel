@@ -24,6 +24,8 @@ func yConfig() *yamux.Config {
 	}
 	if constant.Debug() {
 		c.LogOutput = &yLogger{l: log.With().Str("span", "mux").CallerWithSkipFrameCount(5).Logger()}
+	} else {
+		c.LogOutput = io.Discard
 	}
 	return c
 }
