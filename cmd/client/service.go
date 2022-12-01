@@ -22,7 +22,20 @@ var (
 	serviceCmd = &cobra.Command{
 		Use:   "service",
 		Short: "Run as a service",
-		Args:  cobra.MinimumNArgs(1),
+		Run: func(cmd *cobra.Command, args []string) {
+			svc := getService()
+			es := make(chan error, 100)
+			go func() {
+				for {
+					e := <-es
+					if e != nil {
+						log.Warn().Msg(e.Error())
+					}
+				}
+			}()
+			_, _ = svc.Logger(es)
+			p(svc.Run())
+		},
 	}
 
 	serviceStatusCmd = &cobra.Command{
@@ -109,7 +122,7 @@ func getService() service.Service {
 		Name:        constant.Name,
 		DisplayName: constant.Name + "Client",
 		Description: constant.GitHub,
-		Arguments:   []string{"--addr", config.GetString("addr"), "--key", config.GetString("key"), "--dns", config.GetString("dns")},
+		Arguments:   []string{"service", "--addr", config.GetString("addr"), "--key", config.GetString("key"), "--dns", config.GetString("dns")},
 		Option:      serviceKV,
 	}
 
