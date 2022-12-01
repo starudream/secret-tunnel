@@ -108,7 +108,7 @@ func getService() service.Service {
 		Name:        constant.Name,
 		DisplayName: constant.Name + "Client",
 		Description: constant.GitHub,
-		Arguments:   os.Args[3:],
+		Arguments:   []string{"--dns='" + config.GetString("dns") + "'", "--addr='" + config.GetString("addr") + "'", "--key='" + config.GetString("key") + "'"},
 		Option:      serviceKV,
 	}
 
