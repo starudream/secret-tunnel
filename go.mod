@@ -9,7 +9,7 @@ require (
 	github.com/kardianos/service v1.2.2
 	github.com/panjf2000/ants/v2 v2.6.0
 	github.com/spf13/cobra v1.6.1
-	github.com/starudream/go-lib v1.5.0
+	github.com/starudream/go-lib v1.5.1
 	gorm.io/gorm v1.24.2
 )
 
