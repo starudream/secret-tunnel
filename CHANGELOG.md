@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/starudream/secret-tunnel/compare/v1.1.2...v1.2.0) (2022-12-02)
+
+
+### Features
+
+* **deps:** bump dependencies ([339f6ec](https://github.com/starudream/secret-tunnel/commit/339f6ecd7180dd8e952a598b5a76a697d5d59bf4))
+
 ## [1.1.2](https://github.com/starudream/secret-tunnel/compare/v1.1.1...v1.1.2) (2022-12-01)
 
 
