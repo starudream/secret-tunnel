@@ -84,23 +84,26 @@ func newClient(ctx context.Context) (*Client, error) {
 		lns:     map[string]net.Listener{},
 		workMu:  sync.Mutex{},
 	}
-	tasks, err := json.UnmarshalTo[[]*iTask]([]byte(config.GetString("tasks")))
-	if err != nil {
-		log.Warn().Msgf("unmarshal tasks (%s) error: %v", config.GetString("tasks"), err)
-		return nil, err
-	}
-	if len(tasks) > 0 {
-		for i := 0; i < len(tasks); i++ {
-			t := tasks[i]
-			if t.Secret == "" {
-				continue
+	bs, me := json.Marshal(config.Get("tasks"))
+	if me != nil {
+		log.Warn().Msgf("marshal tasks error: %v, %#v", me, config.Get("tasks"))
+	} else {
+		tasks, ume := json.UnmarshalTo[[]*iTask](bs)
+		if ume != nil {
+			log.Warn().Msgf("unmarshal tasks error: %v, %s", me, bs)
+		} else if len(tasks) > 0 {
+			for i := 0; i < len(tasks); i++ {
+				t := tasks[i]
+				if t.Secret == "" {
+					continue
+				}
+				h, p, e := net.SplitHostPort(t.Address)
+				if e != nil {
+					log.Warn().Msgf("invalid address: %s", t.Address)
+					continue
+				}
+				c.tasks = append(c.tasks, &iTask{Id: seq.NextId(), Address: net.JoinHostPort(h, p), Secret: t.Secret})
 			}
-			h, p, e := net.SplitHostPort(t.Address)
-			if e != nil {
-				log.Warn().Msgf("invalid address: %s", t.Address)
-				continue
-			}
-			c.tasks = append(c.tasks, &iTask{Id: seq.NextId(), Address: net.JoinHostPort(h, p), Secret: t.Secret})
 		}
 	}
 	if c.dns != "" {
@@ -291,6 +294,8 @@ func (c *Client) connectTask(t *iTask) {
 	c.workMu.Lock()
 	c.lns[t.Id] = ln
 	c.workMu.Unlock()
+
+	log.Info().Msgf("listen local task, %s", t.Address)
 
 	for {
 		local, ae := ln.Accept()

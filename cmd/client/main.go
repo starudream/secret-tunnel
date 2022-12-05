@@ -36,9 +36,6 @@ func init() {
 
 	rootCmd.PersistentFlags().String("dns", "8.8.8.8", "dns server")
 	_ = config.BindPFlag("dns", rootCmd.PersistentFlags().Lookup("dns"))
-
-	rootCmd.PersistentFlags().String("tasks", "[]", "tasks json string")
-	_ = config.BindPFlag("tasks", rootCmd.PersistentFlags().Lookup("tasks"))
 }
 
 func main() {
