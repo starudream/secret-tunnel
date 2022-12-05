@@ -1,6 +1,6 @@
 # Secret-Tunnel
 
-![Golang](https://img.shields.io/github/workflow/status/starudream/secret-tunnel/Golang/master?style=for-the-badge)
+![Golang](https://img.shields.io/github/workflow/status/starudream/secret-tunnel/Golang/master?label=Golang&style=for-the-badge)
 ![Docker](https://img.shields.io/github/workflow/status/starudream/secret-tunnel/Docker/master?label=Docker&style=for-the-badge)
 ![Release](https://img.shields.io/github/v/release/starudream/secret-tunnel?include_prereleases&style=for-the-badge)
 ![License](https://img.shields.io/github/license/starudream/secret-tunnel?style=for-the-badge)
@@ -36,22 +36,22 @@ Usage:
   client [command]
 
 Available Commands:
-  completion  Generate the autocompletion script for the specified shell
   help        Help about any command
   service     Run as a service
 
 Flags:
-      --addr string    server address (default "127.0.0.1:9797")
-      --dns string     dns server (default "8.8.8.8")
-  -h, --help           help for client
-      --key string     auth key
-      --tasks string   tasks json string (default "[]")
-  -v, --version        version for client
+      --addr string   server address (default "127.0.0.1:9797")
+      --dns string    dns server (default "8.8.8.8")
+  -h, --help          help for client
+      --key string    auth key
+  -v, --version       version for client
 
 Use "client [command] --help" for more information about a command.
 ```
 
 ```text
+Run as a service
+
 Usage:
   client service [flags]
   client service [command]
@@ -70,10 +70,9 @@ Flags:
       --user   run as current user, not root
 
 Global Flags:
-      --addr string    server address (default "127.0.0.1:9797")
-      --dns string     dns server (default "8.8.8.8")
-      --key string     auth key
-      --tasks string   tasks json string (default "[]")
+      --addr string   server address (default "127.0.0.1:9797")
+      --dns string    dns server (default "8.8.8.8")
+      --key string    auth key
 
 Use "client service [command] --help" for more information about a command.
 ```
@@ -82,14 +81,14 @@ Use "client service [command] --help" for more information about a command.
 
 ### Server [Docker Hub](https://hub.docker.com/r/starudream/secret-tunnel-server)
 
-![Version](https://img.shields.io/docker/v/starudream/secret-tunnel-server?style=for-the-badge)
-![Size](https://img.shields.io/docker/image-size/starudream/secret-tunnel-server/latest?style=for-the-badge)
+![Version](https://img.shields.io/docker/v/starudream/secret-tunnel-server?sort=semver&style=for-the-badge)
+![Size](https://img.shields.io/docker/image-size/starudream/secret-tunnel-server?sort=semver&style=for-the-badge)
 ![Pull](https://img.shields.io/docker/pulls/starudream/secret-tunnel-server?style=for-the-badge)
 
 ### Client [Docker Hub](https://hub.docker.com/r/starudream/secret-tunnel-client)
 
-![Version](https://img.shields.io/docker/v/starudream/secret-tunnel-client?style=for-the-badge)
-![Size](https://img.shields.io/docker/image-size/starudream/secret-tunnel-client/latest?style=for-the-badge)
+![Version](https://img.shields.io/docker/v/starudream/secret-tunnel-client?sort=semver&style=for-the-badge)
+![Size](https://img.shields.io/docker/image-size/starudream/secret-tunnel-client?sort=semver&style=for-the-badge)
 ![Pull](https://img.shields.io/docker/pulls/starudream/secret-tunnel-client?style=for-the-badge)
 
 ## Example

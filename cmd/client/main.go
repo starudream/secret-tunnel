@@ -23,6 +23,9 @@ var rootCmd = &cobra.Command{
 			log.Error().Msgf("client init error: %v", err)
 		}
 	},
+	CompletionOptions: cobra.CompletionOptions{
+		DisableDefaultCmd: true,
+	},
 }
 
 func init() {
