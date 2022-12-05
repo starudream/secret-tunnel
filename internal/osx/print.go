@@ -42,7 +42,7 @@ func P(v ...any) {
 		s += "\n"
 	}
 	if s != "" {
-		_, _ = fmt.Fprintf(w, s)
+		_, _ = fmt.Fprint(w, s)
 	}
 	os.Exit(c)
 }
