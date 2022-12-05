@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.1](https://github.com/starudream/secret-tunnel/compare/v1.3.0...v1.3.1) (2022-12-05)
+
+
+### Bug Fixes
+
+* fix client tasks args ([63a9a3f](https://github.com/starudream/secret-tunnel/commit/63a9a3f538beb6c95b0444a20bca1e6eea4ed1a2))
+* **model:** fix set active default true ([2dee229](https://github.com/starudream/secret-tunnel/commit/2dee2293facefae8dec4ae15a668e58adc33b058))
+
 ## [1.3.0](https://github.com/starudream/secret-tunnel/compare/v1.2.0...v1.3.0) (2022-12-05)
 
 
