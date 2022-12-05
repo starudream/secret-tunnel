@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.3.0](https://github.com/starudream/secret-tunnel/compare/v1.2.0...v1.3.0) (2022-12-05)
+
+
+### Features
+
+* add online update ([b1466f3](https://github.com/starudream/secret-tunnel/commit/b1466f31dd8255bdae01eb115b518cc27c4089ae))
+* add stop service by api ([8b12f3e](https://github.com/starudream/secret-tunnel/commit/8b12f3e5ac45ccd233077f2cf7395a8a5531c8c4))
+* **docs:** add openapi ([e492252](https://github.com/starudream/secret-tunnel/commit/e4922522a49c8ab9a63649e40f488c0119e44d5d))
+
+
+### Performance Improvements
+
+* perfect uninstall service ([c49f168](https://github.com/starudream/secret-tunnel/commit/c49f16816358c97db32b2cb6b304b217758cac56))
+
 ## [1.2.0](https://github.com/starudream/secret-tunnel/compare/v1.1.2...v1.2.0) (2022-12-02)
 
 
