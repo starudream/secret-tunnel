@@ -21,6 +21,8 @@ var rootCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		app.Init(model.Init)
 		app.Add(api.Start, server.Start)
+		comm := make(chan any, 100)
+		api.COMM, server.COMM = comm, comm
 		err := app.OnceGo()
 		if err != nil {
 			log.Error().Msgf("server init error: %v", err)

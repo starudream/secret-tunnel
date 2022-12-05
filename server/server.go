@@ -18,6 +18,8 @@ import (
 	"github.com/starudream/secret-tunnel/model"
 )
 
+var COMM chan any
+
 func Start(ctx context.Context) error {
 	s, err := newServer(ctx)
 	if err != nil {
@@ -32,6 +34,8 @@ func Start(ctx context.Context) error {
 	log.Info().Msgf("server start success on %s", s.address)
 
 	s.ln = ln
+
+	go s.comm()
 
 	s.listener(s.ln)
 
@@ -75,6 +79,26 @@ func newServer(ctx context.Context) (*Server, error) {
 		workMu:  sync.Mutex{},
 	}
 	return s, nil
+}
+
+func (s *Server) comm() {
+	for {
+		v, ok := <-COMM
+		if !ok {
+			return
+		}
+		switch x := v.(type) {
+		case *message.UninstallService:
+			var w *iWork
+			s.workMu.Lock()
+			w = s.works[s.clients[x.Cid]]
+			s.workMu.Unlock()
+			if w == nil {
+				continue
+			}
+			message.WriteL(w.conn, &message.UninstallServiceReq{})
+		}
+	}
 }
 
 func (s *Server) listener(ln net.Listener) {

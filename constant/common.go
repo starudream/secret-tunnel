@@ -12,6 +12,7 @@ import (
 var (
 	VERSION = consts.VERSION
 	BIDTIME = consts.BIDTIME
+	PREFIX  = consts.PREFIX
 )
 
 const (

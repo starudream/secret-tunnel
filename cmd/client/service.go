@@ -1,21 +1,14 @@
 package main
 
 import (
-	"context"
-	"fmt"
-	"os"
-	"runtime"
-	"strings"
-
-	"github.com/kardianos/service"
 	"github.com/spf13/cobra"
 
-	"github.com/starudream/go-lib/app"
 	"github.com/starudream/go-lib/config"
 	"github.com/starudream/go-lib/log"
 
 	"github.com/starudream/secret-tunnel/client"
-	"github.com/starudream/secret-tunnel/constant"
+	"github.com/starudream/secret-tunnel/internal/osx"
+	"github.com/starudream/secret-tunnel/internal/service"
 )
 
 var (
@@ -23,7 +16,7 @@ var (
 		Use:   "service",
 		Short: "Run as a service",
 		Run: func(cmd *cobra.Command, args []string) {
-			svc := getService()
+			svc := service.Get(client.Service)
 			es := make(chan error, 100)
 			go func() {
 				for {
@@ -34,7 +27,7 @@ var (
 				}
 			}()
 			_, _ = svc.Logger(es)
-			p(svc.Run())
+			osx.P(svc.Run())
 		},
 	}
 
@@ -42,11 +35,8 @@ var (
 		Use:   "status",
 		Short: "Get the service status",
 		Run: func(cmd *cobra.Command, args []string) {
-			st, se := getService().Status()
-			if se != nil {
-				p(se)
-			}
-			ss(st)
+			st, se := service.Get(client.Service).Status()
+			osx.P(se, "the service status is "+service.StatusString(st))
 		},
 	}
 
@@ -54,7 +44,7 @@ var (
 		Use:   "start",
 		Short: "Start the service",
 		Run: func(cmd *cobra.Command, args []string) {
-			p(getService().Start(), "the service is started")
+			osx.P(service.Get(client.Service).Start(), "the service is started")
 		},
 	}
 
@@ -62,7 +52,7 @@ var (
 		Use:   "stop",
 		Short: "Stop the service",
 		Run: func(cmd *cobra.Command, args []string) {
-			p(getService().Stop(), "the service is stopped")
+			osx.P(service.Get(client.Service).Stop(), "the service is stopped")
 		},
 	}
 
@@ -70,7 +60,7 @@ var (
 		Use:   "restart",
 		Short: "Restart the service",
 		Run: func(cmd *cobra.Command, args []string) {
-			p(getService().Restart(), "the service is started")
+			osx.P(service.Get(client.Service).Restart(), "the service is started")
 		},
 	}
 
@@ -78,7 +68,7 @@ var (
 		Use:   "install",
 		Short: "Install the service",
 		Run: func(cmd *cobra.Command, args []string) {
-			p(getService().Install(), "the service is installed")
+			osx.P(service.Get(client.Service).Install(), "the service is installed")
 		},
 	}
 
@@ -86,7 +76,7 @@ var (
 		Use:   "uninstall",
 		Short: "Uninstall the service",
 		Run: func(cmd *cobra.Command, args []string) {
-			p(getService().Uninstall(), "the service is uninstalled")
+			osx.P(service.Get(client.Service).Uninstall(), "the service is uninstalled")
 		},
 	}
 
@@ -94,9 +84,9 @@ var (
 		Use:   "reinstall",
 		Short: "Reinstall the service",
 		Run: func(cmd *cobra.Command, args []string) {
-			svc := getService()
+			svc := service.Get(client.Service)
 			_ = svc.Uninstall()
-			p(svc.Install(), "the service is installed")
+			osx.P(svc.Install(), "the service is installed")
 		},
 	}
 )
@@ -112,107 +102,4 @@ func init() {
 
 	serviceCmd.PersistentFlags().Bool("user", false, "run as current user, not root")
 	_ = config.BindPFlag("user", serviceCmd.PersistentFlags().Lookup("user"))
-}
-
-func getService() service.Service {
-	serviceKV := service.KeyValue{}
-	serviceKV["UserService"] = config.GetBool("user")
-
-	serviceCfg := &service.Config{
-		Name:        constant.Name,
-		DisplayName: constant.Name + "Client",
-		Description: constant.GitHub,
-		Arguments:   []string{"service", "--addr", config.GetString("addr"), "--key", config.GetString("key"), "--dns", config.GetString("dns")},
-		Option:      serviceKV,
-	}
-
-	if isDarwin() {
-		serviceCfg.Name = constant.DarwinName
-	}
-
-	svc, err := service.New(&iService{}, serviceCfg)
-	if err != nil {
-		p(err)
-	}
-
-	return svc
-}
-
-type iService struct {
-}
-
-var _ service.Interface = (*iService)(nil)
-
-func (p *iService) Start(_ service.Service) error {
-	go func() {
-		err := client.Start(context.Background())
-		if err != nil {
-			log.Fatal().Msgf("client init error: %v", err)
-		}
-	}()
-	return nil
-}
-
-func (p *iService) Stop(_ service.Service) error {
-	app.Stop()
-	return nil
-}
-
-//goland:noinspection ALL
-func isDarwin() bool {
-	return runtime.GOOS == "darwin"
-}
-
-func ss(st service.Status) {
-	s := "the service status is "
-	switch st {
-	case service.StatusRunning:
-		s += "running"
-	case service.StatusStopped:
-		s += "stopped"
-	default:
-		s += "unknown"
-	}
-	fmt.Println(s)
-}
-
-func p(v ...any) {
-	if len(v) == 0 {
-		os.Exit(0)
-	}
-	c, s, w := 0, "", os.Stdout
-	nh := func() {
-		if len(v) >= 2 {
-			switch y := v[1].(type) {
-			case string:
-				v = v[1:]
-				s = y
-			}
-		}
-	}
-	switch x := v[0].(type) {
-	case string:
-		s = x
-	case error:
-		if x != nil {
-			c, s, w = 1, x.Error(), os.Stderr
-			v = v[:1]
-		} else {
-			nh()
-		}
-	case nil:
-		nh()
-	default:
-		c, s = 1, fmt.Sprint(x)
-	}
-	if len(v) >= 2 {
-		s = fmt.Sprintf(s, v[1:]...)
-	}
-	if !strings.HasSuffix(s, "\n") {
-		s += "\n"
-	}
-	if s != "" {
-		_, _ = fmt.Fprintf(w, s)
-	}
-	os.Exit(c)
 }

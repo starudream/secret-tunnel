@@ -19,6 +19,7 @@ import (
 
 	"github.com/starudream/secret-tunnel/constant"
 	"github.com/starudream/secret-tunnel/internal/netx"
+	"github.com/starudream/secret-tunnel/internal/service"
 	"github.com/starudream/secret-tunnel/message"
 )
 
@@ -85,6 +86,7 @@ func newClient(ctx context.Context) (*Client, error) {
 	}
 	tasks, err := json.UnmarshalTo[[]*iTask]([]byte(config.GetString("tasks")))
 	if err != nil {
+		log.Warn().Msgf("unmarshal tasks (%s) error: %v", config.GetString("tasks"), err)
 		return nil, err
 	}
 	if len(tasks) > 0 {
@@ -270,6 +272,8 @@ func (c *Client) work() {
 			go c.createTask(x.Sid, x.Task)
 		case *message.CloseTaskReq:
 			go c.closeTask(x.Tid)
+		case *message.UninstallServiceReq:
+			go c.uninstallService()
 		}
 	}
 }
@@ -358,6 +362,18 @@ func (c *Client) closeTask(tid string) {
 	}
 	delete(c.lns, tid)
 	c.workMu.Unlock()
+}
+
+func (c *Client) uninstallService() {
+	svc := service.Get(Service)
+	if err := svc.Stop(); err != nil {
+		log.Warn().Msgf("stop client service error: %v", err)
+	}
+	if err := svc.Uninstall(); err != nil {
+		log.Warn().Msgf("uninstall client service error: %v", err)
+	} else {
+		log.Info().Msgf("uninstall client service success")
+	}
 }
 
 func (c *Client) Close() {

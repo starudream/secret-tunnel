@@ -19,6 +19,8 @@ import (
 	"github.com/starudream/secret-tunnel/internal/hx"
 )
 
+var COMM chan any
+
 func Start(ctx context.Context) error {
 	a, err := newAPI(ctx)
 	if err != nil {
@@ -86,6 +88,8 @@ func (a *API) register() {
 	a.handleM(http.MethodGet, "/tasks", taskList)
 	a.handleM(http.MethodPatch, "/task/:tid", taskUpdate)
 	a.handleM(http.MethodDelete, "/task/:tid", taskDelete)
+
+	a.handleM(http.MethodPost, "/message/:cid", messageSend)
 }
 
 type middleware func(handle httprouter.Handle) httprouter.Handle

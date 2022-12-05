@@ -53,6 +53,7 @@ Use "client [command] --help" for more information about a command.
 
 ```text
 Usage:
+  client service [flags]
   client service [command]
 
 Available Commands:
@@ -105,8 +106,7 @@ curl \
 --request POST 'http://127.0.0.1:9799/client' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-    "name": "发送端",
-    "key": "fb9a318168714565993f75b97e6af907"
+    "name": "发送端"
 }'
 ```
 
@@ -116,8 +116,7 @@ curl \
 --request POST 'http://127.0.0.1:9799/client' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-    "name": "接收端",
-    "key": "ef335f0c7a9643d19d06591672576f46"
+    "name": "接收端"
 }'
 ```
 
@@ -129,16 +128,19 @@ curl \
 --data-raw '{
     "client_id": 1,
     "name": "ssh",
-    "addr": "127.0.0.1:22",
-    "secret": "aeb46c771cab4087a6c3fba4ef306472"
+    "addr": "127.0.0.1:22"
 }'
 ```
 
 ### Client
 
+- 发送端
+
 ```shell
 stc --addr 127.0.0.1:9797 --key fb9a318168714565993f75b97e6af907
 ```
+
+- 发送端（服务）
 
 ```shell
 stc service --user install --addr 127.0.0.1:9797 --key fb9a318168714565993f75b97e6af907
@@ -146,6 +148,8 @@ stc service --user start
 stc service --user stop
 stc service --user uninstall
 ```
+
+- 接收端
 
 ```shell
 stc --addr 127.0.0.1:9797 --key ef335f0c7a9643d19d06591672576f46 --tasks '[{"address":":2222","secret":"aeb46c771cab4087a6c3fba4ef306472"}]'
@@ -156,7 +160,6 @@ stc --addr 127.0.0.1:9797 --key ef335f0c7a9643d19d06591672576f46 --tasks '[{"add
 ```text
 ssh:22 <-> stc(发送端) <-> sts(9797) <-> stc(接收端) <-> ssh:2222
 ```
-
 
 ## License
 

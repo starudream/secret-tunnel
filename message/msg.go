@@ -25,6 +25,7 @@ var (
 		0xC3: &CreateTaskReq{},
 		0xC4: &ConnectTaskResp{},
 		0xC5: &CloseTaskReq{},
+		0xCF: &UninstallServiceReq{},
 
 		// E F means server -> client
 		0xE1: &LoginReq{},
@@ -32,6 +33,7 @@ var (
 		0xE3: &CreateTaskResp{},
 		0xE4: &ConnectTaskReq{},
 		0xE5: &CloseTaskResp{},
+		0xEF: &UninstallServiceResp{},
 	}
 
 	typeByteMap = map[reflect.Type]byte{}
@@ -126,6 +128,9 @@ type CloseTaskReq struct {
 	Tid string `json:"tid,omitempty"`
 }
 
+type UninstallServiceReq struct {
+}
+
 // client -> server
 
 type LoginReq struct {
@@ -155,4 +160,8 @@ type ConnectTaskReq struct {
 }
 
 type CloseTaskResp struct {
+}
+
+type UninstallServiceResp struct {
+	Error
 }
