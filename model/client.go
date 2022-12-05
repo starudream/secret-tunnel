@@ -4,7 +4,7 @@ type Client struct {
 	Id     uint   `json:"id" gorm:"primaryKey,autoIncrement"`
 	Name   string `json:"name"`
 	Key    string `json:"key" gorm:"uniqueIndex"`
-	Active bool   `json:"active"`
+	Active bool   `json:"active" gorm:"default:true"`
 	Online bool   `json:"online"`
 
 	Addr     string `json:"addr"`
