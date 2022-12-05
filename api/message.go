@@ -3,6 +3,7 @@ package api
 import (
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/julienschmidt/httprouter"
 
@@ -16,7 +17,12 @@ func messageSend(w http.ResponseWriter, _ *http.Request, ps httprouter.Params) {
 		return
 	}
 
-	COMM <- &message.UninstallService{Cid: uint(cid)}
+	switch strings.ToLower(ps.ByName("action")) {
+	case "stop":
+		COMM <- &message.StopService{Cid: uint(cid)}
+	case "uninstall":
+		COMM <- &message.UninstallService{Cid: uint(cid)}
+	}
 
 	OK(w)
 }

@@ -89,7 +89,7 @@ func (a *API) register() {
 	a.handleM(http.MethodPatch, "/task/:tid", taskUpdate)
 	a.handleM(http.MethodDelete, "/task/:tid", taskDelete)
 
-	a.handleM(http.MethodPost, "/message/:cid", messageSend)
+	a.handleM(http.MethodPost, "/message/:cid/:action", messageSend)
 }
 
 type middleware func(handle httprouter.Handle) httprouter.Handle

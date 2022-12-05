@@ -88,11 +88,14 @@ func (s *Server) comm() {
 			return
 		}
 		switch x := v.(type) {
+		case *message.StopService:
+			w := s.getWork(x.Cid)
+			if w == nil {
+				continue
+			}
+			message.WriteL(w.conn, &message.StopServiceReq{})
 		case *message.UninstallService:
-			var w *iWork
-			s.workMu.Lock()
-			w = s.works[s.clients[x.Cid]]
-			s.workMu.Unlock()
+			w := s.getWork(x.Cid)
 			if w == nil {
 				continue
 			}
@@ -296,14 +299,18 @@ func (s *Server) closeWork(wid string) {
 }
 
 func (s *Server) createTask(cid uint, tid, sid string, task message.Task) bool {
-	var w *iWork
-	s.workMu.Lock()
-	w = s.works[s.clients[cid]]
-	s.workMu.Unlock()
+	w := s.getWork(cid)
 	if w == nil {
 		return false
 	}
 	return message.WriteL(w.conn, &message.CreateTaskReq{Tid: tid, Sid: sid, Task: task})
+}
+
+func (s *Server) getWork(cid uint) (w *iWork) {
+	s.workMu.Lock()
+	w = s.works[s.clients[cid]]
+	s.workMu.Unlock()
+	return
 }
 
 func (s *Server) Close() {

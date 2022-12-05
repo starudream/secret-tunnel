@@ -25,6 +25,7 @@ var (
 		0xC3: &CreateTaskReq{},
 		0xC4: &ConnectTaskResp{},
 		0xC5: &CloseTaskReq{},
+		0xCE: &StopServiceReq{},
 		0xCF: &UninstallServiceReq{},
 
 		// E F means server -> client
@@ -33,6 +34,7 @@ var (
 		0xE3: &CreateTaskResp{},
 		0xE4: &ConnectTaskReq{},
 		0xE5: &CloseTaskResp{},
+		0xEE: &StopServiceResp{},
 		0xEF: &UninstallServiceResp{},
 	}
 
@@ -128,6 +130,9 @@ type CloseTaskReq struct {
 	Tid string `json:"tid,omitempty"`
 }
 
+type StopServiceReq struct {
+}
+
 type UninstallServiceReq struct {
 }
 
@@ -160,6 +165,10 @@ type ConnectTaskReq struct {
 }
 
 type CloseTaskResp struct {
+}
+
+type StopServiceResp struct {
+	Error
 }
 
 type UninstallServiceResp struct {

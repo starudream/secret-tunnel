@@ -272,6 +272,8 @@ func (c *Client) work() {
 			go c.createTask(x.Sid, x.Task)
 		case *message.CloseTaskReq:
 			go c.closeTask(x.Tid)
+		case *message.StopServiceReq:
+			go c.stopService()
 		case *message.UninstallServiceReq:
 			go c.uninstallService()
 		}
@@ -364,10 +366,21 @@ func (c *Client) closeTask(tid string) {
 	c.workMu.Unlock()
 }
 
+func (c *Client) stopService() {
+	svc := service.Get(Service)
+	if err := svc.Stop(); err != nil {
+		log.Warn().Msgf("stop client service error: %v", err)
+	} else {
+		log.Info().Msgf("stop client service success")
+	}
+}
+
 func (c *Client) uninstallService() {
 	svc := service.Get(Service)
 	if err := svc.Stop(); err != nil {
 		log.Warn().Msgf("stop client service error: %v", err)
+	} else {
+		log.Info().Msgf("stop client service success")
 	}
 	if err := svc.Uninstall(); err != nil {
 		log.Warn().Msgf("uninstall client service error: %v", err)
