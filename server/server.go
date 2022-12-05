@@ -146,6 +146,12 @@ func (s *Server) into(conn net.Conn) {
 			}
 			log.Warn().Str("remote", netx.RemoteAddrString(conn)).Msgf("client disconnected")
 			c.Close()
+			go func() {
+				ue := model.UpdateClientOffline(client.Id)
+				if ue != nil {
+					log.Warn().Msgf("update client offline error: %v", ue)
+				}
+			}()
 			return
 		}
 		w := &iWork{
@@ -176,7 +182,24 @@ func (s *Server) login(conn net.Conn) (*model.Client, bool) {
 	if loginReq.Key != "" {
 		client, err := model.GetClientByKey(loginReq.Key)
 		if err == nil {
+			if !client.Active {
+				log.Warn().Msgf("client not active")
+				return nil, false
+			}
 			if message.WriteL(conn, &message.LoginResp{Ver: constant.VERSION}) {
+				go func() {
+					ue := model.UpdateClientOnline(&model.Client{
+						Id:       client.Id,
+						Addr:     netx.RemoteAddrString(conn),
+						GO:       loginReq.GO,
+						OS:       loginReq.OS,
+						ARCH:     loginReq.ARCH,
+						Hostname: loginReq.Hostname,
+					})
+					if ue != nil {
+						log.Warn().Msgf("update client online error: %v", ue)
+					}
+				}()
 				return client, true
 			}
 			return nil, false
@@ -237,6 +260,11 @@ func (s *Server) work(w *iWork) (no bool) {
 			if err != nil {
 				log.Warn().Msgf("db get task error, %v", err)
 				message.WriteL(w.conn, &message.ConnectTaskResp{Error: message.NewError("secret not match")})
+				continue
+			}
+			if !t.Active {
+				log.Warn().Msgf("task not active")
+				message.WriteL(w.conn, &message.ConnectTaskResp{Error: message.NewError("task not active")})
 				continue
 			}
 			sid, task := seq.NextId(), message.NewTask(t.Id, t.Name, t.Addr)

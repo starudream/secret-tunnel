@@ -30,7 +30,6 @@ func TestClient(t *testing.T) {
 
 	err = UpdateClientOnline(&Client{
 		Id:       client.Id,
-		Online:   true,
 		Addr:     randx.F().IPv4Address(),
 		GO:       runtime.Version(),
 		OS:       runtime.GOOS,
@@ -41,6 +40,9 @@ func TestClient(t *testing.T) {
 
 	client, err = GetClientByKey(client.Key)
 	testx.P(t, err, client)
+
+	err = UpdateClientOffline(client.Id)
+	testx.P(t, err)
 
 	clients, err := ListClient()
 	testx.P(t, err, clients)

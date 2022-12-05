@@ -33,7 +33,12 @@ func UpdateClientActive(id uint, active bool) error {
 }
 
 func UpdateClientOnline(client *Client) error {
+	client.Online = true
 	return _db.Select("online", "addr", "go", "os", "arch", "hostname").Where("id = ?", client.Id).Updates(client).Error
+}
+
+func UpdateClientOffline(id uint) error {
+	return _db.Model(&Client{}).Where("id = ?", id).Update("online", false).Error
 }
 
 func GetClientById(id uint) (*Client, error) {
