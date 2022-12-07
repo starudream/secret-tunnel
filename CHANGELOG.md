@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.4.0](https://github.com/starudream/secret-tunnel/compare/v1.3.1...v1.4.0) (2022-12-07)
+
+
+### Features
+
+* **server:** add client and task manager in terminal ([ae1015c](https://github.com/starudream/secret-tunnel/commit/ae1015c7e46422e0704a26e5fe3f5a02a67f4fe4))
+
+
+### Performance Improvements
+
+* **model:** perfect sql ([f8b202b](https://github.com/starudream/secret-tunnel/commit/f8b202b0af7b20d4a4a7bb7bd2dfc4874e3491b5))
+* perfect log ([fe1cd14](https://github.com/starudream/secret-tunnel/commit/fe1cd1441c2ccff1156b3e3a94e8d8c51a99c5c1))
+* perfect log caller ([f236a99](https://github.com/starudream/secret-tunnel/commit/f236a99a800c7e175f05772cc887d8be75d5dee5))
+
 ## [1.3.1](https://github.com/starudream/secret-tunnel/compare/v1.3.0...v1.3.1) (2022-12-05)
 
 
