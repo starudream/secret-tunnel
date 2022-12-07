@@ -19,6 +19,12 @@
 ```text
 Usage:
   server [flags]
+  server [command]
+
+Available Commands:
+  client      Manage clients
+  help        Help about any command
+  task        Manage tasks
 
 Flags:
       --addr string    server address (default "0.0.0.0:9797")
@@ -26,6 +32,8 @@ Flags:
   -h, --help           help for server
       --token string   api token
   -v, --version        version for server
+
+Use "server [command] --help" for more information about a command.
 ```
 
 ### Client
@@ -47,34 +55,6 @@ Flags:
   -v, --version       version for client
 
 Use "client [command] --help" for more information about a command.
-```
-
-```text
-Run as a service
-
-Usage:
-  client service [flags]
-  client service [command]
-
-Available Commands:
-  install     Install the service
-  reinstall   Reinstall the service
-  restart     Restart the service
-  start       Start the service
-  status      Get the service status
-  stop        Stop the service
-  uninstall   Uninstall the service
-
-Flags:
-  -h, --help   help for service
-      --user   run as current user, not root
-
-Global Flags:
-      --addr string   server address (default "127.0.0.1:9797")
-      --dns string    dns server (default "8.8.8.8")
-      --key string    auth key
-
-Use "client service [command] --help" for more information about a command.
 ```
 
 ## Docker
