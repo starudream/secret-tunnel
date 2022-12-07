@@ -1,20 +1,20 @@
 package model
 
 import (
-	"fmt"
 	"os"
 	"testing"
 
 	"gorm.io/gorm"
 
 	"github.com/glebarez/sqlite"
+
+	"github.com/starudream/go-lib/log"
 )
 
 func TestMain(m *testing.M) {
 	err := InitTest()
 	if err != nil {
-		_, _ = fmt.Fprintln(os.Stderr, err.Error())
-		os.Exit(1)
+		log.Fatal().Msgf("init error: %v", err.Error())
 	}
 	os.Exit(m.Run())
 }
@@ -35,7 +35,7 @@ func InitTest() error {
 		return err
 	}
 
-	fmt.Println("db migrate success")
+	log.Debug().Msgf("db migrate success")
 
 	_db = db
 
