@@ -13,15 +13,17 @@ type Task struct {
 }
 
 func CreateTask(task *Task) (*Task, error) {
+	task.Active = true
 	return task, _db.Select("client_id", "name", "secret", "addr").Create(task).Error
 }
 
 func DeleteTask(id uint) error {
-	return _db.Delete(&Task{}, "id = ?", id).Error
+	task := &Task{Id: id}
+	return _db.Delete(task).Error
 }
 
 func UpdateTask(task *Task) (*Task, error) {
-	return task, _db.Select("name", "addr").Where("id = ?", task.Id).Updates(task).Error
+	return task, _db.Select("name", "addr").Updates(task).Error
 }
 
 func UpdateTaskActive(id uint, active bool) error {
@@ -42,5 +44,5 @@ func GetTaskBySecret(clientId uint, secret string) (*Task, error) {
 }
 
 func ListTaskByClientId(clientId uint) (tasks []*Task, err error) {
-	return tasks, _db.Find(&tasks, "client_id = ?", clientId).Error
+	return tasks, _db.Order("id").Find(&tasks, "client_id = ?", clientId).Error
 }

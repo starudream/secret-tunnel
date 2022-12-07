@@ -17,15 +17,17 @@ type Client struct {
 }
 
 func CreateClient(client *Client) (*Client, error) {
+	client.Active = true
 	return client, _db.Select("name", "key").Create(client).Error
 }
 
 func DeleteClient(id uint) error {
-	return _db.Delete(&Client{}, "id = ?", id).Error
+	client := &Client{Id: id}
+	return _db.Delete(client).Error
 }
 
 func UpdateClient(client *Client) (*Client, error) {
-	return client, _db.Select("name").Where("id = ?", client.Id).Updates(client).Error
+	return client, _db.Select("name").Updates(client).Error
 }
 
 func UpdateClientActive(id uint, active bool) error {
@@ -34,7 +36,7 @@ func UpdateClientActive(id uint, active bool) error {
 
 func UpdateClientOnline(client *Client) error {
 	client.Online = true
-	return _db.Select("online", "addr", "go", "os", "arch", "hostname").Where("id = ?", client.Id).Updates(client).Error
+	return _db.Select("online", "addr", "go", "os", "arch", "hostname").Updates(client).Error
 }
 
 func UpdateClientOffline(id uint) error {
@@ -52,5 +54,5 @@ func GetClientByKey(key string) (*Client, error) {
 }
 
 func ListClient() (clients []*Client, err error) {
-	return clients, _db.Find(&clients).Error
+	return clients, _db.Order("id").Find(&clients).Error
 }
