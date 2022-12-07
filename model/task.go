@@ -7,7 +7,6 @@ type Task struct {
 	Secret   string `json:"secret" gorm:"uniqueIndex"`
 	Addr     string `json:"addr"`
 	Active   bool   `json:"active" gorm:"default:true"`
-	Online   bool   `json:"online"`
 
 	Meta
 }

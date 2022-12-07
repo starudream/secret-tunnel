@@ -67,6 +67,7 @@ type Client struct {
 
 type iTask struct {
 	Id      string `json:"id,omitempty"`
+	Name    string `json:"name,omitempty"`
 	Address string `json:"address"`
 	Secret  string `json:"secret"`
 }
@@ -102,7 +103,7 @@ func newClient(ctx context.Context) (*Client, error) {
 					log.Warn().Msgf("invalid address: %s", t.Address)
 					continue
 				}
-				c.tasks = append(c.tasks, &iTask{Id: seq.NextId(), Address: net.JoinHostPort(h, p), Secret: t.Secret})
+				c.tasks = append(c.tasks, &iTask{Id: seq.NextId(), Name: t.Name, Address: net.JoinHostPort(h, p), Secret: t.Secret})
 			}
 		}
 	}
@@ -242,6 +243,7 @@ func (c *Client) work() {
 	}
 
 	defer close(c.lostCh)
+	defer c.closeWork()
 
 	if !message.WriteL(conn, &message.WorkReq{}) {
 		c.c.Close()
@@ -266,7 +268,9 @@ func (c *Client) work() {
 				c.c.Close()
 				return
 			}
+			c.workMu.Lock()
 			c.wid = x.Wid
+			c.workMu.Unlock()
 			for _, t := range c.tasks {
 				t := t
 				go c.connectTask(t)
@@ -286,7 +290,7 @@ func (c *Client) work() {
 func (c *Client) connectTask(t *iTask) {
 	ln, err := net.Listen("tcp", t.Address)
 	if err != nil {
-		log.Warn().Msgf("listen to local %s error: %v", t.Address, err)
+		log.Warn().Str("task", t.Name).Msgf("listen to local %s error: %v", t.Address, err)
 		return
 	}
 	defer c.closeTask(t.Id)
@@ -295,7 +299,7 @@ func (c *Client) connectTask(t *iTask) {
 	c.lns[t.Id] = ln
 	c.workMu.Unlock()
 
-	log.Info().Msgf("listen local task, %s", t.Address)
+	log.Info().Str("task", t.Name).Msgf("listen local task, %s", t.Address)
 
 	for {
 		local, ae := ln.Accept()
@@ -309,14 +313,18 @@ func (c *Client) connectTask(t *iTask) {
 func (c *Client) copyConn(local net.Conn, t *iTask) {
 	remote, err := c.c.Session().Open()
 	if err != nil {
-		log.Warn().Msgf("open stream error: %v", err)
+		log.Warn().Str("task", t.Name).Msgf("open stream error: %v", err)
 		return
 	}
 	defer netx.Close(remote)
 
+	c.workMu.Lock()
+	wid := c.wid
+	c.workMu.Unlock()
+
 	task := message.NewTaskSecret(t.Secret)
 
-	if !message.WriteL(remote, &message.ConnectTaskReq{Wid: c.wid, Tid: t.Id, Task: task}) {
+	if !message.WriteL(remote, &message.ConnectTaskReq{Wid: wid, Tid: t.Id, Task: task}) {
 		return
 	}
 
@@ -331,15 +339,15 @@ func (c *Client) copyConn(local net.Conn, t *iTask) {
 
 	connectResp := v.(*message.ConnectTaskResp)
 
-	log.Debug().Str("task", connectResp.Task.Name).Str("sid", connectResp.Sid).Str("tid", t.Id).Msgf("task new connection")
+	log.Debug().Str("task", connectResp.Task.Name).Msgf("task new connection")
 
-	netx.Copy(remote, local)
+	netx.Copy(remote, local, "task", connectResp.Task.Name)
 }
 
 func (c *Client) createTask(sid string, t message.Task) {
 	remote, err := c.c.Session().Open()
 	if err != nil {
-		log.Warn().Msgf("open stream error: %v", err)
+		log.Warn().Str("task", t.Name).Msgf("open stream error: %v", err)
 		c.c.Close()
 		return
 	}
@@ -347,7 +355,7 @@ func (c *Client) createTask(sid string, t message.Task) {
 
 	local, err := net.DialTimeout("tcp", t.Addr, 10*time.Second)
 	if err != nil {
-		log.Warn().Msgf("dial to local %s error: %v", t.Addr, err)
+		log.Warn().Str("task", t.Name).Msgf("dial to local %s error: %v", t.Addr, err)
 		message.WriteL(remote, &message.CreateTaskResp{Sid: sid, Error: message.NewError("dial to local %s error: %v", t.Addr, err)})
 		return
 	}
@@ -357,9 +365,9 @@ func (c *Client) createTask(sid string, t message.Task) {
 		return
 	}
 
-	log.Debug().Str("sid", sid).Str("addr", t.Addr).Msgf("task new connection")
+	log.Debug().Str("task", t.Name).Str("addr", t.Addr).Msgf("task new connection")
 
-	netx.Copy(local, remote)
+	netx.Copy(local, remote, "task", t.Name)
 }
 
 func (c *Client) closeTask(tid string) {
@@ -368,6 +376,15 @@ func (c *Client) closeTask(tid string) {
 		_ = ln.Close()
 	}
 	delete(c.lns, tid)
+	c.workMu.Unlock()
+}
+
+func (c *Client) closeWork() {
+	c.workMu.Lock()
+	for _, ln := range c.lns {
+		_ = ln.Close()
+	}
+	c.lns = map[string]net.Listener{}
 	c.workMu.Unlock()
 }
 

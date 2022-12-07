@@ -55,7 +55,7 @@ func (i *iLogger) Trace(_ context.Context, begin time.Time, fc func() (sql strin
 	}()
 
 	if err != nil && !errx.Is(err, gorm.ErrRecordNotFound) {
-		l.Error().Msgf("db error: %v -->> %s", err, sql)
+		l.Error().Msgf("%s -->> %v", sql, err)
 	} else {
 		if elapsed > dbSlowThreshold {
 			l.Warn().Msg(sql)

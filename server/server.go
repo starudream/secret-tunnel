@@ -50,10 +50,9 @@ type Server struct {
 
 	ln net.Listener
 
-	clients map[uint]string     // k: id, v: wid
-	works   map[string]*iWork   // k: wid
-	ts      map[string]string   // k: sid, v: tid
-	lcs     map[string]net.Conn // k: sid
+	clients map[uint]string   // k: id, v: wid
+	works   map[string]*iWork // k: wid
+	cs      map[string]*iConn // key: sid
 	workMu  sync.Mutex
 }
 
@@ -66,6 +65,15 @@ type iWork struct {
 	c    *netx.Conn
 }
 
+type iConn struct {
+	sid string
+	tid string
+
+	task *model.Task
+
+	conn net.Conn
+}
+
 func newServer(ctx context.Context) (*Server, error) {
 	ctx, cancel := context.WithCancel(ctx)
 	s := &Server{
@@ -74,8 +82,7 @@ func newServer(ctx context.Context) (*Server, error) {
 		cancel:  cancel,
 		clients: map[uint]string{},
 		works:   map[string]*iWork{},
-		ts:      map[string]string{},
-		lcs:     map[string]net.Conn{},
+		cs:      map[string]*iConn{},
 		workMu:  sync.Mutex{},
 	}
 	return s, nil
@@ -128,16 +135,16 @@ func (s *Server) into(conn net.Conn) {
 	}
 
 	s.workMu.Lock()
-	if wid, exist := s.clients[client.Id]; exist {
-		log.Warn().Msgf("client has been registered, new replaces old")
-		message.WriteL(s.works[wid].conn, &message.Close{Reason: "new client registered"})
-		s.works[wid].c.Close()
-		delete(s.works, wid)
-		delete(s.clients, client.Id)
-	}
+	wid, exist := s.clients[client.Id]
 	s.workMu.Unlock()
 
-	log.Info().Str("remote", remote).Msgf("client login success")
+	if exist {
+		log.Warn().Str("client", client.Name).Msgf("client has been registered, new replaces old")
+		message.WriteL(s.works[wid].conn, &message.Close{Reason: "new client registered"})
+		s.closeWork(wid)
+	}
+
+	log.Info().Str("client", client.Name).Msgf("client login success")
 
 	c := netx.New(conn, true)
 
@@ -145,14 +152,14 @@ func (s *Server) into(conn net.Conn) {
 		sc, err := c.Session().Accept()
 		if err != nil {
 			if !errx.Is(err, io.EOF) && !strings.Contains(err.Error(), "use of closed network connection") {
-				log.Warn().Msgf("accept connection error: %v", err)
+				log.Warn().Str("client", client.Name).Msgf("accept connection error: %v", err)
 			}
-			log.Warn().Str("remote", netx.RemoteAddrString(conn)).Msgf("client disconnected")
+			log.Warn().Str("client", client.Name).Msgf("client disconnected")
 			c.Close()
 			go func() {
 				ue := model.UpdateClientOffline(client.Id)
 				if ue != nil {
-					log.Warn().Msgf("update client offline error: %v", ue)
+					log.Warn().Str("client", client.Name).Msgf("update client offline error: %v", ue)
 				}
 			}()
 			return
@@ -186,7 +193,7 @@ func (s *Server) login(conn net.Conn) (*model.Client, bool) {
 		client, err := model.GetClientByKey(loginReq.Key)
 		if err == nil {
 			if !client.Active {
-				log.Warn().Msgf("client not active")
+				log.Warn().Str("client", client.Name).Msgf("client not active")
 				return nil, false
 			}
 			if message.WriteL(conn, &message.LoginResp{Ver: constant.VERSION}) {
@@ -200,7 +207,7 @@ func (s *Server) login(conn net.Conn) (*model.Client, bool) {
 						Hostname: loginReq.Hostname,
 					})
 					if ue != nil {
-						log.Warn().Msgf("update client online error: %v", ue)
+						log.Warn().Str("client", client.Name).Msgf("update client online error: %v", ue)
 					}
 				}()
 				return client, true
@@ -236,43 +243,42 @@ func (s *Server) work(w *iWork) (no bool) {
 			if !message.WriteL(w.conn, &message.WorkResp{Wid: w.id}) {
 				return
 			}
-			log.Debug().Str("wid", w.id).Msgf("work start")
+			log.Debug().Str("client", w.client.Name).Msgf("work start")
 		case *message.CreateTaskResp:
 			if x.GetError() != "" {
-				log.Warn().Msgf("create task error: %s", x.GetError())
+				log.Warn().Str("client", w.client.Name).Msgf("create task error: %s", x.GetError())
 				continue
 			}
 			s.workMu.Lock()
-			tid, conn := s.ts[x.Sid], s.lcs[x.Sid]
+			c := s.cs[x.Sid]
 			s.workMu.Unlock()
-			if conn == nil {
-				if tid != "" {
-					message.WriteL(w.conn, &message.CloseTaskReq{Tid: tid})
+			if c.conn == nil {
+				if c.tid != "" {
+					message.WriteL(w.conn, &message.CloseTaskReq{Tid: c.tid})
 				}
 				continue
 			}
-			log.Debug().Str("tid", tid).Str("sid", x.Sid).Msgf("task new connection")
-			netx.Copy(w.conn, conn)
+			log.Debug().Str("client", w.client.Name).Str("task", c.task.Name).Msgf("task new connection")
+			netx.Copy(w.conn, c.conn, "client", w.client.Name, "task", c.task.Name)
 			s.workMu.Lock()
-			delete(s.ts, x.Sid)
-			delete(s.lcs, x.Sid)
+			delete(s.cs, x.Sid)
 			s.workMu.Unlock()
 			return
 		case *message.ConnectTaskReq:
 			t, err := model.GetTaskBySecret(0, x.Secret)
 			if err != nil {
-				log.Warn().Msgf("db get task error, %v", err)
+				log.Warn().Str("client", w.client.Name).Msgf("db get task error, %v", err)
 				message.WriteL(w.conn, &message.ConnectTaskResp{Error: message.NewError("secret not match")})
 				continue
 			}
 			if !t.Active {
-				log.Warn().Msgf("task not active")
+				log.Warn().Str("client", w.client.Name).Str("task", t.Name).Msgf("task not active")
 				message.WriteL(w.conn, &message.ConnectTaskResp{Error: message.NewError("task not active")})
 				continue
 			}
 			sid, task := seq.NextId(), message.NewTask(t.Id, t.Name, t.Addr)
 			if !s.createTask(t.ClientId, x.Tid, sid, task) {
-				log.Warn().Str("tid", x.Tid).Str("sid", sid).Msgf("create task error, target client is not online")
+				log.Warn().Str("client", w.client.Name).Str("task", t.Name).Msgf("create task error, target client is not online")
 				message.WriteL(w.conn, &message.ConnectTaskResp{Error: message.NewError("target client is not online")})
 				continue
 			}
@@ -280,8 +286,7 @@ func (s *Server) work(w *iWork) (no bool) {
 				continue
 			}
 			s.workMu.Lock()
-			s.ts[sid] = x.Tid
-			s.lcs[sid] = w.conn
+			s.cs[sid] = &iConn{sid: sid, tid: x.Tid, task: t, conn: w.conn}
 			s.workMu.Unlock()
 			return true
 		}
