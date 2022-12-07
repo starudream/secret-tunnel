@@ -6,8 +6,6 @@ import (
 
 	"github.com/julienschmidt/httprouter"
 
-	"github.com/starudream/go-lib/seq"
-
 	"github.com/starudream/secret-tunnel/model"
 )
 
@@ -29,9 +27,7 @@ func taskCreate(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		return
 	}
 
-	req.Secret = seq.UUIDShort()
-
-	task, err := model.CreateTask(&model.Task{ClientId: req.ClientId, Name: req.Name, Secret: req.Secret, Addr: req.Addr})
+	task, err := model.CreateTask(&model.Task{ClientId: req.ClientId, Name: req.Name, Addr: req.Addr})
 	if err != nil {
 		ERRInternal(w, model.Wrap(err).Error())
 		return

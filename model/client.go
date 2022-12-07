@@ -1,5 +1,11 @@
 package model
 
+import (
+	"time"
+
+	"github.com/starudream/go-lib/seq"
+)
+
 type Client struct {
 	Id     uint   `json:"id" gorm:"primaryKey,autoIncrement"`
 	Name   string `json:"name"`
@@ -13,10 +19,12 @@ type Client struct {
 	ARCH     string `json:"arch"`
 	Hostname string `json:"hostname"`
 
-	Meta
+	CreateAt time.Time `json:"create_at" gorm:"autoCreateTime"`
+	UpdateAt time.Time `json:"update_at" gorm:"autoUpdateTime"`
 }
 
 func CreateClient(client *Client) (*Client, error) {
+	client.Key = seq.UUIDShort()
 	client.Active = true
 	return client, _db.Select("name", "key").Create(client).Error
 }

@@ -4,18 +4,16 @@ import (
 	"testing"
 
 	"github.com/starudream/go-lib/randx"
-	"github.com/starudream/go-lib/seq"
 	"github.com/starudream/go-lib/testx"
 )
 
 func TestTask(t *testing.T) {
-	client, err := CreateClient(&Client{Name: randx.F().Name(), Key: seq.UUID()})
+	client, err := CreateClient(&Client{Name: randx.F().Name()})
 	testx.P(t, err, client)
 
 	task, err := CreateTask(&Task{
 		ClientId: client.Id,
 		Name:     randx.F().Name(),
-		Secret:   seq.UUID(),
 		Addr:     randx.F().IPv4Address(),
 	})
 	testx.P(t, err, task)
@@ -38,5 +36,8 @@ func TestTask(t *testing.T) {
 	testx.P(t, err, tasks)
 
 	err = DeleteTask(task.Id)
+	testx.P(t, err)
+
+	err = DeleteTaskByClientId(client.Id)
 	testx.P(t, err)
 }

@@ -11,6 +11,7 @@ import (
 
 	"github.com/starudream/secret-tunnel/client"
 	"github.com/starudream/secret-tunnel/constant"
+	"github.com/starudream/secret-tunnel/internal/osx"
 )
 
 var rootCmd = &cobra.Command{
@@ -29,16 +30,16 @@ var rootCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(serviceCmd)
-
 	rootCmd.PersistentFlags().String("addr", "127.0.0.1:9797", "server address")
-	_ = config.BindPFlag("addr", rootCmd.PersistentFlags().Lookup("addr"))
+	osx.PE(config.BindPFlag("addr", rootCmd.PersistentFlags().Lookup("addr")))
 
 	rootCmd.PersistentFlags().String("key", "", "auth key")
-	_ = config.BindPFlag("key", rootCmd.PersistentFlags().Lookup("key"))
+	osx.PE(config.BindPFlag("key", rootCmd.PersistentFlags().Lookup("key")))
 
 	rootCmd.PersistentFlags().String("dns", "8.8.8.8", "dns server")
-	_ = config.BindPFlag("dns", rootCmd.PersistentFlags().Lookup("dns"))
+	osx.PE(config.BindPFlag("dns", rootCmd.PersistentFlags().Lookup("dns")))
+
+	rootCmd.AddCommand(serviceCmd)
 }
 
 func main() {

@@ -6,15 +6,11 @@ import (
 	"testing"
 
 	"github.com/starudream/go-lib/randx"
-	"github.com/starudream/go-lib/seq"
 	"github.com/starudream/go-lib/testx"
 )
 
 func TestClient(t *testing.T) {
-	client, err := CreateClient(&Client{
-		Name: randx.F().Name(),
-		Key:  seq.UUID(),
-	})
+	client, err := CreateClient(&Client{Name: randx.F().Name()})
 	testx.P(t, err, client)
 
 	client, err = GetClientById(client.Id)

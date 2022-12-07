@@ -6,8 +6,6 @@ import (
 
 	"github.com/julienschmidt/httprouter"
 
-	"github.com/starudream/go-lib/seq"
-
 	"github.com/starudream/secret-tunnel/model"
 )
 
@@ -22,9 +20,7 @@ func clientCreate(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		return
 	}
 
-	req.Key = seq.UUIDShort()
-
-	client, err := model.CreateClient(&model.Client{Name: req.Name, Key: req.Key})
+	client, err := model.CreateClient(&model.Client{Name: req.Name})
 	if err != nil {
 		ERRInternal(w, model.Wrap(err).Error())
 		return
@@ -96,6 +92,12 @@ func clientDelete(w http.ResponseWriter, _ *http.Request, ps httprouter.Params) 
 	}
 
 	err = model.DeleteClient(uint(cid))
+	if err != nil {
+		ERRInternal(w, model.Wrap(err).Error())
+		return
+	}
+
+	err = model.DeleteTaskByClientId(uint(cid))
 	if err != nil {
 		ERRInternal(w, model.Wrap(err).Error())
 		return

@@ -6,9 +6,9 @@ import (
 	"strings"
 )
 
-func P(v ...any) {
+func P(v ...any) int {
 	if len(v) == 0 {
-		os.Exit(0)
+		return 0
 	}
 	c, s, w := 0, "", os.Stdout
 	nh := func() {
@@ -41,8 +41,22 @@ func P(v ...any) {
 	if !strings.HasSuffix(s, "\n") {
 		s += "\n"
 	}
-	if s != "" {
+	if len(s) > 1 {
 		_, _ = fmt.Fprint(w, s)
 	}
-	os.Exit(c)
+	return c
+}
+
+func PE(v ...any) {
+	c := P(v...)
+	if c != 0 {
+		os.Exit(c)
+	}
+}
+
+func PA(v ...any) {
+	if len(v) == 0 {
+		os.Exit(0)
+	}
+	os.Exit(P(v...))
 }

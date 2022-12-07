@@ -27,7 +27,7 @@ var (
 				}
 			}()
 			_, _ = svc.Logger(es)
-			osx.P(svc.Run())
+			osx.PA(svc.Run())
 		},
 	}
 
@@ -36,7 +36,7 @@ var (
 		Short: "Get the service status",
 		Run: func(cmd *cobra.Command, args []string) {
 			st, se := service.Get(client.Service).Status()
-			osx.P(se, "the service status is "+service.StatusString(st))
+			osx.PA(se, "the service status is "+service.StatusString(st))
 		},
 	}
 
@@ -44,7 +44,7 @@ var (
 		Use:   "start",
 		Short: "Start the service",
 		Run: func(cmd *cobra.Command, args []string) {
-			osx.P(service.Get(client.Service).Start(), "the service is started")
+			osx.PA(service.Get(client.Service).Start(), "the service is started")
 		},
 	}
 
@@ -52,7 +52,7 @@ var (
 		Use:   "stop",
 		Short: "Stop the service",
 		Run: func(cmd *cobra.Command, args []string) {
-			osx.P(service.Get(client.Service).Stop(), "the service is stopped")
+			osx.PA(service.Get(client.Service).Stop(), "the service is stopped")
 		},
 	}
 
@@ -60,7 +60,7 @@ var (
 		Use:   "restart",
 		Short: "Restart the service",
 		Run: func(cmd *cobra.Command, args []string) {
-			osx.P(service.Get(client.Service).Restart(), "the service is started")
+			osx.PA(service.Get(client.Service).Restart(), "the service is started")
 		},
 	}
 
@@ -68,7 +68,7 @@ var (
 		Use:   "install",
 		Short: "Install the service",
 		Run: func(cmd *cobra.Command, args []string) {
-			osx.P(service.Get(client.Service).Install(), "the service is installed")
+			osx.PA(service.Get(client.Service).Install(), "the service is installed")
 		},
 	}
 
@@ -76,7 +76,7 @@ var (
 		Use:   "uninstall",
 		Short: "Uninstall the service",
 		Run: func(cmd *cobra.Command, args []string) {
-			osx.P(service.Get(client.Service).Uninstall(), "the service is uninstalled")
+			osx.PA(service.Get(client.Service).Uninstall(), "the service is uninstalled")
 		},
 	}
 
@@ -85,13 +85,16 @@ var (
 		Short: "Reinstall the service",
 		Run: func(cmd *cobra.Command, args []string) {
 			svc := service.Get(client.Service)
-			_ = svc.Uninstall()
-			osx.P(svc.Install(), "the service is installed")
+			osx.PE(svc.Uninstall())
+			osx.PA(svc.Install(), "the service is installed")
 		},
 	}
 )
 
 func init() {
+	serviceCmd.PersistentFlags().Bool("user", false, "run as current user, not root")
+	osx.PE(config.BindPFlag("user", serviceCmd.PersistentFlags().Lookup("user")))
+
 	serviceCmd.AddCommand(serviceStatusCmd)
 	serviceCmd.AddCommand(serviceStartCmd)
 	serviceCmd.AddCommand(serviceStopCmd)
@@ -99,7 +102,4 @@ func init() {
 	serviceCmd.AddCommand(serviceInstallCmd)
 	serviceCmd.AddCommand(serviceUninstallCmd)
 	serviceCmd.AddCommand(serviceReinstallCmd)
-
-	serviceCmd.PersistentFlags().Bool("user", false, "run as current user, not root")
-	_ = config.BindPFlag("user", serviceCmd.PersistentFlags().Lookup("user"))
 }
