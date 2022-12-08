@@ -3,8 +3,6 @@ package netx
 import (
 	"io"
 	"sync"
-
-	"github.com/starudream/secret-tunnel/internal/pool"
 )
 
 type ReadWriteCloser struct {
@@ -66,15 +64,4 @@ func WrapReadWriteCloser(r io.Reader, w io.Writer, closeFn func() error) io.Read
 		w:       w,
 		closeFn: closeFn,
 	}
-}
-
-func WithCompression(rwc io.ReadWriteCloser) io.ReadWriteCloser {
-	sr := pool.GetSnappyReader(rwc)
-	sw := pool.GetSnappyWriter(rwc)
-	return WrapReadWriteCloser(sr, sw, func() error {
-		err := rwc.Close()
-		pool.PutSnappyReader(sr)
-		pool.PutSnappyWriter(sw)
-		return err
-	})
 }
