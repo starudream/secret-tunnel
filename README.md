@@ -90,6 +90,10 @@ curl \
 ```
 
 ```shell
+sts client create --name 发送端
+```
+
+```shell
 curl \
 --location \
 --request POST 'http://127.0.0.1:9799/client' \
@@ -97,6 +101,10 @@ curl \
 --data-raw '{
     "name": "接收端"
 }'
+```
+
+```shell
+sts client create --name 接收端
 ```
 
 ```shell
@@ -109,6 +117,10 @@ curl \
     "name": "ssh",
     "addr": "127.0.0.1:22"
 }'
+```
+
+```shell
+sts task create --client-id 1 --name ssh --addr 127.0.0.1:22
 ```
 
 ### Client
@@ -131,7 +143,14 @@ stc service --user uninstall
 - 接收端
 
 ```shell
-stc --addr 127.0.0.1:9797 --key ef335f0c7a9643d19d06591672576f46 --tasks '[{"address":":2222","secret":"aeb46c771cab4087a6c3fba4ef306472"}]'
+stc --addr 127.0.0.1:9797 --key ef335f0c7a9643d19d06591672576f46
+```
+
+```yaml
+tasks:
+  - name: ssh
+    address: 127.0.0.1:2222
+    secret: ab6080af85f44772a0613fd20c09397d
 ```
 
 ### Data Transfer
