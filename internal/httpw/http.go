@@ -1,4 +1,4 @@
-package hx
+package httpw
 
 import (
 	"net/http"

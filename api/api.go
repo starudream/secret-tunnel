@@ -16,7 +16,7 @@ import (
 	"github.com/starudream/go-lib/log"
 
 	"github.com/starudream/secret-tunnel/constant"
-	"github.com/starudream/secret-tunnel/internal/hx"
+	"github.com/starudream/secret-tunnel/internal/httpw"
 )
 
 var COMM chan any
@@ -143,9 +143,9 @@ func (a *API) logger(h httprouter.Handle) httprouter.Handle {
 		} else {
 			l.Info().Msgf("req=%s", bs)
 		}
-		w = hx.NewResponse(w)
+		w = httpw.NewResponse(w)
 		h(w, r, ps)
-		resp, sc := hx.GetResponse(w)
+		resp, sc := httpw.GetResponse(w)
 		l.Info().Int("code", sc).Dur("took", time.Since(start)).Msgf("resp=%s", resp)
 	}
 }

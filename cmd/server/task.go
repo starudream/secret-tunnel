@@ -4,7 +4,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/starudream/secret-tunnel/internal/osx"
-	"github.com/starudream/secret-tunnel/internal/tw"
+	"github.com/starudream/secret-tunnel/internal/tablew"
 	"github.com/starudream/secret-tunnel/model"
 )
 
@@ -23,9 +23,9 @@ var (
 		},
 		Run: func(cmd *cobra.Command, args []string) {
 			client, err := model.GetClientById(taskClientId)
-			osx.PE(err, tw.PrintStruct(client))
+			osx.PE(err, tablew.PrintStruct(client))
 			task, err := model.CreateTask(&model.Task{ClientId: taskClientId, Name: taskName, Addr: taskAddr})
-			osx.PA(err, tw.PrintStruct(task))
+			osx.PA(err, tablew.PrintStruct(task))
 		},
 	}
 
@@ -37,7 +37,7 @@ var (
 		},
 		Run: func(cmd *cobra.Command, args []string) {
 			tasks, err := model.ListTaskByClientId(taskClientId)
-			osx.PA(err, tw.PrintStructs(tasks))
+			osx.PA(err, tablew.PrintStructs(tasks))
 		},
 	}
 

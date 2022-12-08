@@ -1,4 +1,4 @@
-package tw
+package tablew
 
 import (
 	"bytes"
