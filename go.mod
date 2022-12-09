@@ -4,6 +4,7 @@ go 1.18
 
 require (
 	github.com/glebarez/sqlite v1.5.0
+	github.com/golang/snappy v0.0.4
 	github.com/julienschmidt/httprouter v1.3.0
 	github.com/kardianos/service v1.2.2
 	github.com/minio/selfupdate v0.5.0
@@ -30,7 +31,7 @@ require (
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
-	github.com/magiconair/properties v1.8.6 // indirect
+	github.com/magiconair/properties v1.8.7 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.16 // indirect
 	github.com/mattn/go-runewidth v0.0.14 // indirect

@@ -3,6 +3,10 @@ package netx
 import (
 	"io"
 	"sync"
+
+	"github.com/golang/snappy"
+
+	"github.com/starudream/secret-tunnel/internal/pool"
 )
 
 type ReadWriteCloser struct {
@@ -22,7 +26,11 @@ func (rwc *ReadWriteCloser) Read(p []byte) (n int, err error) {
 }
 
 func (rwc *ReadWriteCloser) Write(p []byte) (n int, err error) {
-	return rwc.w.Write(p)
+	n, err = rwc.w.Write(p)
+	if w, ok := rwc.w.(*snappy.Writer); ok {
+		err = w.Flush()
+	}
+	return
 }
 
 func (rwc *ReadWriteCloser) Close() (res error) {
@@ -64,4 +72,15 @@ func WrapReadWriteCloser(r io.Reader, w io.Writer, closeFn func() error) io.Read
 		w:       w,
 		closeFn: closeFn,
 	}
+}
+
+func WithCompression(rwc io.ReadWriteCloser) io.ReadWriteCloser {
+	sr := pool.GetSnappyReader(rwc)
+	sw := pool.GetSnappyWriter(rwc)
+	return WrapReadWriteCloser(sr, sw, func() error {
+		err := rwc.Close()
+		pool.PutSnappyReader(sr)
+		pool.PutSnappyWriter(sw)
+		return err
+	})
 }
