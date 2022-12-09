@@ -27,6 +27,9 @@ func (rwc *ReadWriteCloser) Read(p []byte) (n int, err error) {
 
 func (rwc *ReadWriteCloser) Write(p []byte) (n int, err error) {
 	n, err = rwc.w.Write(p)
+	if err != nil {
+		return
+	}
 	if w, ok := rwc.w.(*snappy.Writer); ok {
 		err = w.Flush()
 	}
