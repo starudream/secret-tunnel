@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.5.0](https://github.com/starudream/secret-tunnel/compare/v1.4.0...v1.5.0) (2022-12-09)
+
+
+### Features
+
+* add self update ([5650e91](https://github.com/starudream/secret-tunnel/commit/5650e9185c574878f0336cf967ab81d683c9e02c))
+* add task compress ([5e60bc0](https://github.com/starudream/secret-tunnel/commit/5e60bc0700fe28b4d82b8577cd8d31294272511a))
+
+
+### Bug Fixes
+
+* fix rwc write ([a472f6a](https://github.com/starudream/secret-tunnel/commit/a472f6ab35257764805a9b02d94dd48a3d60c8fe))
+* fix snappy ([4f6ea7c](https://github.com/starudream/secret-tunnel/commit/4f6ea7c20077752c67a1d16f82b9dd62a3a8ec5b))
+
+
+### Performance Improvements
+
+* no more required client-id ([34f5e8b](https://github.com/starudream/secret-tunnel/commit/34f5e8b7ba2c4d4b0d310f1f8a1cbd571d3f8682))
+* perfect package name ([dc6949d](https://github.com/starudream/secret-tunnel/commit/dc6949db0f531481df04a6cf9df948bcd7304942))
+* perfect parse client tasks ([f765746](https://github.com/starudream/secret-tunnel/commit/f765746f911d31892622e8036612658c1cae41f9))
+* remove snappy ([971a294](https://github.com/starudream/secret-tunnel/commit/971a294ad91225bfabcfe4e0a2e1a946b89dee91))
+
 ## [1.4.0](https://github.com/starudream/secret-tunnel/compare/v1.3.1...v1.4.0) (2022-12-07)
 
 
