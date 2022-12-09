@@ -357,7 +357,11 @@ func (c *Client) copyConn(local net.Conn, t *iTask) {
 
 	log.Debug().Str("task", connectResp.Task.Name).Msgf("task new connection")
 
-	netx.Copy(remote, local, "task", connectResp.Task.Name)
+	if connectResp.Compress {
+		netx.Copy(netx.WithCompression(remote), local, "task", connectResp.Task.Name)
+	} else {
+		netx.Copy(remote, local, "task", connectResp.Task.Name)
+	}
 }
 
 func (c *Client) createTask(sid string, t message.Task) {
@@ -383,7 +387,11 @@ func (c *Client) createTask(sid string, t message.Task) {
 
 	log.Debug().Str("task", t.Name).Str("addr", t.Addr).Msgf("task new connection")
 
-	netx.Copy(local, remote, "task", t.Name)
+	if t.Compress {
+		netx.Copy(local, netx.WithCompression(remote), "task", t.Name)
+	} else {
+		netx.Copy(local, remote, "task", t.Name)
+	}
 }
 
 func (c *Client) closeTask(tid string) {

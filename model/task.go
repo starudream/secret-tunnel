@@ -13,6 +13,7 @@ type Task struct {
 	Secret   string `json:"secret" gorm:"uniqueIndex"`
 	Addr     string `json:"addr"`
 	Active   bool   `json:"active" gorm:"default:true"`
+	Compress bool   `json:"compress"`
 
 	CreateAt time.Time `json:"create_at" gorm:"autoCreateTime"`
 	UpdateAt time.Time `json:"update_at" gorm:"autoUpdateTime"`
@@ -39,6 +40,10 @@ func UpdateTask(task *Task) (*Task, error) {
 
 func UpdateTaskActive(id uint, active bool) error {
 	return _db.Model(&Task{}).Where("id = ?", id).Update("active", active).Error
+}
+
+func UpdateTaskCompress(id uint, compress bool) error {
+	return _db.Model(&Task{}).Where("id = ?", id).Update("compress", compress).Error
 }
 
 func GetTaskById(id uint) (*Task, error) {

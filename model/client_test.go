@@ -21,7 +21,7 @@ func TestClient(t *testing.T) {
 	_, err = UpdateClient(client)
 	testx.P(t, err)
 
-	err = UpdateClientActive(client.Id, true)
+	err = UpdateClientActive(client.Id, false)
 	testx.P(t, err)
 
 	err = UpdateClientOnline(&Client{

@@ -276,7 +276,7 @@ func (s *Server) work(w *iWork) (no bool) {
 				message.WriteL(w.conn, &message.ConnectTaskResp{Error: message.NewError("task not active")})
 				continue
 			}
-			sid, task := seq.NextId(), message.NewTask(t.Id, t.Name, t.Addr)
+			sid, task := seq.NextId(), message.NewTask(t.Id, t.Name, t.Addr, t.Compress)
 			if !s.createTask(t.ClientId, x.Tid, sid, task) {
 				log.Warn().Str("client", w.client.Name).Str("task", t.Name).Msgf("create task error, target client is not online")
 				message.WriteL(w.conn, &message.ConnectTaskResp{Error: message.NewError("target client is not online")})

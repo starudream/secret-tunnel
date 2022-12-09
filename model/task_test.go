@@ -26,7 +26,10 @@ func TestTask(t *testing.T) {
 	_, err = UpdateTask(task)
 	testx.P(t, err)
 
-	err = UpdateTaskActive(task.Id, true)
+	err = UpdateTaskActive(task.Id, false)
+	testx.P(t, err)
+
+	err = UpdateTaskCompress(task.Id, true)
 	testx.P(t, err)
 
 	task, err = GetTaskBySecret(client.Id, task.Secret)

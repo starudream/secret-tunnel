@@ -78,17 +78,19 @@ func (err Error) GetError() string {
 }
 
 type Task struct {
-	Id     uint   `json:"id,omitempty"`
-	Name   string `json:"name,omitempty"`
-	Addr   string `json:"addr,omitempty"`
-	Secret string `json:"secret,omitempty"`
+	Id       uint   `json:"id,omitempty"`
+	Name     string `json:"name,omitempty"`
+	Addr     string `json:"addr,omitempty"`
+	Secret   string `json:"secret,omitempty"`
+	Compress bool   `json:"compress,omitempty"`
 }
 
-func NewTask(id uint, name, addr string) Task {
+func NewTask(id uint, name, addr string, compress bool) Task {
 	return Task{
-		Id:   id,
-		Name: name,
-		Addr: addr,
+		Id:       id,
+		Name:     name,
+		Addr:     addr,
+		Compress: compress,
 	}
 }
 
