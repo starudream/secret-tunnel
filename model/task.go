@@ -55,5 +55,8 @@ func GetTaskBySecret(clientId uint, secret string) (*Task, error) {
 }
 
 func ListTaskByClientId(clientId uint) (tasks []*Task, err error) {
+	if clientId == 0 {
+		return tasks, _db.Order("id").Find(&tasks).Error
+	}
 	return tasks, _db.Order("id").Find(&tasks, "client_id = ?", clientId).Error
 }

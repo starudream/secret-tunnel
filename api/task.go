@@ -53,11 +53,7 @@ func taskGet(w http.ResponseWriter, _ *http.Request, ps httprouter.Params) {
 }
 
 func taskList(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	cid, err := strconv.Atoi(r.URL.Query().Get("cid"))
-	if err != nil {
-		ERRRequest(w, "invalid cid")
-		return
-	}
+	cid, _ := strconv.Atoi(r.URL.Query().Get("cid"))
 
 	tasks, err := model.ListTaskByClientId(uint(cid))
 	if err != nil {

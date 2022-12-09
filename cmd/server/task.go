@@ -55,7 +55,6 @@ func init() {
 	osx.PE(taskCreateCmd.MarkPersistentFlagRequired("addr"))
 
 	taskListCmd.PersistentFlags().UintVar(&taskClientId, "client-id", 0, "which client the task belongs to")
-	osx.PE(taskListCmd.MarkPersistentFlagRequired("client-id"))
 
 	taskCmd.AddCommand(taskCreateCmd)
 	taskCmd.AddCommand(taskListCmd)
