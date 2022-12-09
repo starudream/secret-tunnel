@@ -78,34 +78,13 @@ func newClient(ctx context.Context) (*Client, error) {
 		dns:     config.GetString("dns"),
 		address: config.GetString("addr"),
 		key:     config.GetString("key"),
+		tasks:   parseTasks(),
 		ctx:     ctx,
 		cancel:  cancel,
 		lostCh:  make(chan struct{}),
 		cMu:     sync.Mutex{},
 		lns:     map[string]net.Listener{},
 		workMu:  sync.Mutex{},
-	}
-	bs, me := json.Marshal(config.Get("tasks"))
-	if me != nil {
-		log.Warn().Msgf("marshal tasks error: %v, %#v", me, config.Get("tasks"))
-	} else {
-		tasks, ume := json.UnmarshalTo[[]*iTask](bs)
-		if ume != nil {
-			log.Warn().Msgf("unmarshal tasks error: %v, %s", me, bs)
-		} else if len(tasks) > 0 {
-			for i := 0; i < len(tasks); i++ {
-				t := tasks[i]
-				if t.Secret == "" {
-					continue
-				}
-				h, p, e := net.SplitHostPort(t.Address)
-				if e != nil {
-					log.Warn().Msgf("invalid address: %s", t.Address)
-					continue
-				}
-				c.tasks = append(c.tasks, &iTask{Id: seq.NextId(), Name: t.Name, Address: net.JoinHostPort(h, p), Secret: t.Secret})
-			}
-		}
 	}
 	if c.dns != "" {
 		if !strings.Contains(c.dns, ":") {
@@ -122,6 +101,43 @@ func newClient(ctx context.Context) (*Client, error) {
 		}
 	}
 	return c, nil
+}
+
+func parseTasks() (tasks []*iTask) {
+	v := config.Get("tasks")
+	ts, err := func() ([]*iTask, error) {
+		switch x := v.(type) {
+		case string:
+			return json.UnmarshalTo[[]*iTask]([]byte(x))
+		case []any:
+			bs, err := json.Marshal(x)
+			if err != nil {
+				return nil, err
+			}
+			return json.UnmarshalTo[[]*iTask](bs)
+		case nil:
+			return nil, nil
+		default:
+			return nil, fmt.Errorf("unrecognized type: %T", v)
+		}
+	}()
+	if err != nil {
+		log.Warn().Msgf("parse tasks error: %v", err)
+		return
+	}
+	for i := 0; i < len(ts); i++ {
+		t := ts[i]
+		if t.Secret == "" {
+			continue
+		}
+		h, p, e := net.SplitHostPort(t.Address)
+		if e != nil {
+			log.Warn().Msgf("invalid task address: %s %s", t.Name, t.Address)
+			continue
+		}
+		tasks = append(tasks, &iTask{Id: seq.NextId(), Name: t.Name, Address: net.JoinHostPort(h, p), Secret: t.Secret})
+	}
+	return
 }
 
 func (c *Client) init() (err error) {
