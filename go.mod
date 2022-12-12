@@ -3,15 +3,15 @@ module github.com/starudream/secret-tunnel
 go 1.18
 
 require (
-	github.com/glebarez/sqlite v1.5.0
+	github.com/glebarez/sqlite v1.6.0
 	github.com/golang/snappy v0.0.4
 	github.com/julienschmidt/httprouter v1.3.0
 	github.com/kardianos/service v1.2.2
 	github.com/minio/selfupdate v0.5.0
 	github.com/olekukonko/tablewriter v0.0.5
-	github.com/panjf2000/ants/v2 v2.6.0
+	github.com/panjf2000/ants/v2 v2.7.0
 	github.com/spf13/cobra v1.6.1
-	github.com/starudream/go-lib v1.5.2
+	github.com/starudream/go-lib v1.5.3
 	gorm.io/gorm v1.24.2
 )
 
