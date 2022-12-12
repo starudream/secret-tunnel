@@ -10,6 +10,7 @@ type Client struct {
 	Id     uint   `json:"id" gorm:"primaryKey,autoIncrement"`
 	Name   string `json:"name"`
 	Key    string `json:"key" gorm:"uniqueIndex"`
+	Ver    string `json:"ver"`
 	Active bool   `json:"active" gorm:"default:true"`
 	Online bool   `json:"online"`
 
@@ -44,7 +45,7 @@ func UpdateClientActive(id uint, active bool) error {
 
 func UpdateClientOnline(client *Client) error {
 	client.Online = true
-	return _db.Select("online", "addr", "go", "os", "arch", "hostname").Updates(client).Error
+	return _db.Select("ver", "online", "addr", "go", "os", "arch", "hostname").Updates(client).Error
 }
 
 func UpdateClientOffline(id uint) error {

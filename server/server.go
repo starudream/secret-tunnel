@@ -200,6 +200,7 @@ func (s *Server) login(conn net.Conn) (*model.Client, bool) {
 				go func() {
 					ue := model.UpdateClientOnline(&model.Client{
 						Id:       client.Id,
+						Ver:      loginReq.Ver,
 						Addr:     netx.RemoteAddrString(conn),
 						GO:       loginReq.GO,
 						OS:       loginReq.OS,

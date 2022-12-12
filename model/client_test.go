@@ -7,6 +7,8 @@ import (
 
 	"github.com/starudream/go-lib/randx"
 	"github.com/starudream/go-lib/testx"
+
+	"github.com/starudream/secret-tunnel/constant"
 )
 
 func TestClient(t *testing.T) {
@@ -26,6 +28,7 @@ func TestClient(t *testing.T) {
 
 	err = UpdateClientOnline(&Client{
 		Id:       client.Id,
+		Ver:      constant.VERSION,
 		Addr:     randx.F().IPv4Address(),
 		GO:       runtime.Version(),
 		OS:       runtime.GOOS,
