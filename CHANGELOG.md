@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.5.2](https://github.com/starudream/secret-tunnel/compare/v1.5.1...v1.5.2) (2022-12-12)
+
+
+### Bug Fixes
+
+* fix format ([a171b6d](https://github.com/starudream/secret-tunnel/commit/a171b6db1f0eeddcd4759b69315a0c9441798a6b))
+* fix table time format ([56eb132](https://github.com/starudream/secret-tunnel/commit/56eb132d977c28ea101c4762f82b322a5c32bf15))
+* fix update client version ([ebcb3e8](https://github.com/starudream/secret-tunnel/commit/ebcb3e804d2a3114b8c7863d0e54ce45da3030d6))
+
+
+### Performance Improvements
+
+* perfect db time ([429d052](https://github.com/starudream/secret-tunnel/commit/429d052c584297598c22e52808309dba600d7efd))
+* perfect package import ([40e2ac7](https://github.com/starudream/secret-tunnel/commit/40e2ac7ba6f2047d284daa323bad1e757a9ee317))
+
 ## [1.5.1](https://github.com/starudream/secret-tunnel/compare/v1.5.0...v1.5.1) (2022-12-12)
 
 
