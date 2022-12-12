@@ -12,6 +12,7 @@ import (
 
 	"github.com/starudream/secret-tunnel/constant"
 	"github.com/starudream/secret-tunnel/internal/pool"
+	"github.com/starudream/secret-tunnel/internal/unitx"
 )
 
 func Copy(c1, c2 io.ReadWriteCloser, kvs ...string) (in int64, out int64) {
@@ -25,7 +26,7 @@ func Copy(c1, c2 io.ReadWriteCloser, kvs ...string) (in int64, out int64) {
 		for i := 0; i < len(kvs); i += 2 {
 			l = l.Str(kvs[i], kvs[i+1])
 		}
-		l.CallerSkipFrame(1).Msgf("copy stats, in: %d, out: %d", in, out)
+		l.CallerSkipFrame(1).Msgf("copy stats, in: %s, out: %d", unitx.HumanSize(float64(in)), unitx.HumanSize(float64(out)))
 	}
 	return
 }
