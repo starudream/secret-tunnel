@@ -77,7 +77,11 @@ func SetStructs(t *tablewriter.Table, v any) error {
 				if f.IsValid() {
 					switch s := f.Interface().(type) {
 					case time.Time:
-						rows[j] = s.Format(time.RFC3339)
+						if s.IsZero() {
+							rows[j] = ""
+						} else {
+							rows[j] = s.Format(time.RFC3339)
+						}
 					case fmt.Stringer:
 						rows[j] = s.String()
 					default:
