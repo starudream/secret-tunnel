@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.1](https://github.com/starudream/secret-tunnel/compare/v1.5.0...v1.5.1) (2022-12-12)
+
+
+### Performance Improvements
+
+* perfect format copy bytes size ([07cf09e](https://github.com/starudream/secret-tunnel/commit/07cf09ee2f32bb0f160ea23dc31d0120b865629e))
+
 ## [1.5.0](https://github.com/starudream/secret-tunnel/compare/v1.4.0...v1.5.0) (2022-12-09)
 
 
