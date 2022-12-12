@@ -15,8 +15,8 @@ type Task struct {
 	Active   bool   `json:"active" gorm:"default:true"`
 	Compress bool   `json:"compress"`
 
-	CreateAt time.Time `json:"create_at" gorm:"autoCreateTime"`
-	UpdateAt time.Time `json:"update_at" gorm:"autoUpdateTime"`
+	CreateAt time.Time `json:"create_at" gorm:"autoCreateTime:milli"`
+	UpdateAt time.Time `json:"update_at" gorm:"autoUpdateTime:milli"`
 }
 
 func CreateTask(task *Task) (*Task, error) {

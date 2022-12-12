@@ -20,8 +20,10 @@ type Client struct {
 	ARCH     string `json:"arch"`
 	Hostname string `json:"hostname"`
 
-	CreateAt time.Time `json:"create_at" gorm:"autoCreateTime"`
-	UpdateAt time.Time `json:"update_at" gorm:"autoUpdateTime"`
+	LastOnlineAt time.Time `json:"last_online_at"`
+
+	CreateAt time.Time `json:"create_at" gorm:"autoCreateTime:milli"`
+	UpdateAt time.Time `json:"update_at" gorm:"autoUpdateTime:milli"`
 }
 
 func CreateClient(client *Client) (*Client, error) {
@@ -45,7 +47,8 @@ func UpdateClientActive(id uint, active bool) error {
 
 func UpdateClientOnline(client *Client) error {
 	client.Online = true
-	return _db.Select("ver", "online", "addr", "go", "os", "arch", "hostname").Updates(client).Error
+	client.LastOnlineAt = time.Now().Truncate(time.Millisecond)
+	return _db.Select("ver", "online", "addr", "go", "os", "arch", "hostname", "last_online_at").Updates(client).Error
 }
 
 func UpdateClientOffline(id uint) error {
