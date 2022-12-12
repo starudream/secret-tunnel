@@ -4,8 +4,6 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/julienschmidt/httprouter"
-
 	"github.com/starudream/secret-tunnel/model"
 )
 
@@ -14,7 +12,7 @@ type clientReq struct {
 	Key  string `json:"key,omitempty"`
 }
 
-func clientCreate(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func clientCreate(w http.ResponseWriter, r *http.Request, _ Params) {
 	req, err := V[*clientReq](w, r)
 	if err != nil {
 		return
@@ -29,7 +27,7 @@ func clientCreate(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	OK(w, client)
 }
 
-func clientGet(w http.ResponseWriter, _ *http.Request, ps httprouter.Params) {
+func clientGet(w http.ResponseWriter, _ *http.Request, ps Params) {
 	cid, err := strconv.Atoi(ps.ByName("cid"))
 	if err != nil {
 		ERRRequest(w, "invalid cid")
@@ -45,7 +43,7 @@ func clientGet(w http.ResponseWriter, _ *http.Request, ps httprouter.Params) {
 	OK(w, client)
 }
 
-func clientList(w http.ResponseWriter, _ *http.Request, _ httprouter.Params) {
+func clientList(w http.ResponseWriter, _ *http.Request, _ Params) {
 	clients, err := model.ListClient()
 	if err != nil {
 		ERRInternal(w, model.Wrap(err).Error())
@@ -55,7 +53,7 @@ func clientList(w http.ResponseWriter, _ *http.Request, _ httprouter.Params) {
 	OK(w, clients)
 }
 
-func clientUpdate(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+func clientUpdate(w http.ResponseWriter, r *http.Request, ps Params) {
 	cid, err := strconv.Atoi(ps.ByName("cid"))
 	if err != nil {
 		ERRRequest(w, "invalid cid")
@@ -84,7 +82,7 @@ func clientUpdate(w http.ResponseWriter, r *http.Request, ps httprouter.Params) 
 	OK(w, client)
 }
 
-func clientDelete(w http.ResponseWriter, _ *http.Request, ps httprouter.Params) {
+func clientDelete(w http.ResponseWriter, _ *http.Request, ps Params) {
 	cid, err := strconv.Atoi(ps.ByName("cid"))
 	if err != nil {
 		ERRRequest(w, "invalid cid")

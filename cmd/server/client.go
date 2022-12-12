@@ -3,9 +3,10 @@ package main
 import (
 	"github.com/spf13/cobra"
 
+	"github.com/starudream/secret-tunnel/model"
+
 	"github.com/starudream/secret-tunnel/internal/osx"
 	"github.com/starudream/secret-tunnel/internal/tablew"
-	"github.com/starudream/secret-tunnel/model"
 )
 
 var (

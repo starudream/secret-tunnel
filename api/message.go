@@ -5,12 +5,10 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/julienschmidt/httprouter"
-
 	"github.com/starudream/secret-tunnel/message"
 )
 
-func messageSend(w http.ResponseWriter, _ *http.Request, ps httprouter.Params) {
+func messageSend(w http.ResponseWriter, _ *http.Request, ps Params) {
 	cid, err := strconv.Atoi(ps.ByName("cid"))
 	if err != nil {
 		ERRRequest(w, "invalid cid")

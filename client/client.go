@@ -18,9 +18,10 @@ import (
 	"github.com/starudream/go-lib/seq"
 
 	"github.com/starudream/secret-tunnel/constant"
+	"github.com/starudream/secret-tunnel/message"
+
 	"github.com/starudream/secret-tunnel/internal/netx"
 	"github.com/starudream/secret-tunnel/internal/service"
-	"github.com/starudream/secret-tunnel/message"
 )
 
 func Start(ctx context.Context) error {

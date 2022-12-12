@@ -11,6 +11,7 @@ import (
 
 	"github.com/starudream/secret-tunnel/client"
 	"github.com/starudream/secret-tunnel/constant"
+
 	"github.com/starudream/secret-tunnel/internal/osx"
 )
 

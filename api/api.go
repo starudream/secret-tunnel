@@ -16,6 +16,7 @@ import (
 	"github.com/starudream/go-lib/log"
 
 	"github.com/starudream/secret-tunnel/constant"
+
 	"github.com/starudream/secret-tunnel/internal/httpw"
 )
 
@@ -91,6 +92,8 @@ func (a *API) register() {
 
 	a.handleM(http.MethodPost, "/message/:cid/:action", messageSend)
 }
+
+type Params = httprouter.Params
 
 type middleware func(handle httprouter.Handle) httprouter.Handle
 

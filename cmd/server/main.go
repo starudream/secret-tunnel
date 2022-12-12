@@ -11,9 +11,10 @@ import (
 
 	"github.com/starudream/secret-tunnel/api"
 	"github.com/starudream/secret-tunnel/constant"
-	"github.com/starudream/secret-tunnel/internal/osx"
 	"github.com/starudream/secret-tunnel/model"
 	"github.com/starudream/secret-tunnel/server"
+
+	"github.com/starudream/secret-tunnel/internal/osx"
 )
 
 var rootCmd = &cobra.Command{

@@ -4,8 +4,6 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/julienschmidt/httprouter"
-
 	"github.com/starudream/secret-tunnel/model"
 )
 
@@ -16,7 +14,7 @@ type taskReq struct {
 	Addr     string `json:"addr" validate:"required,hostname_port"`
 }
 
-func taskCreate(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func taskCreate(w http.ResponseWriter, r *http.Request, _ Params) {
 	req, err := V[*taskReq](w, r)
 	if err != nil {
 		return
@@ -36,7 +34,7 @@ func taskCreate(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	OK(w, task)
 }
 
-func taskGet(w http.ResponseWriter, _ *http.Request, ps httprouter.Params) {
+func taskGet(w http.ResponseWriter, _ *http.Request, ps Params) {
 	tid, err := strconv.Atoi(ps.ByName("tid"))
 	if err != nil {
 		ERRRequest(w, "invalid tid")
@@ -52,7 +50,7 @@ func taskGet(w http.ResponseWriter, _ *http.Request, ps httprouter.Params) {
 	OK(w, task)
 }
 
-func taskList(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func taskList(w http.ResponseWriter, r *http.Request, _ Params) {
 	cid, _ := strconv.Atoi(r.URL.Query().Get("cid"))
 
 	tasks, err := model.ListTaskByClientId(uint(cid))
@@ -64,7 +62,7 @@ func taskList(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	OK(w, tasks)
 }
 
-func taskUpdate(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+func taskUpdate(w http.ResponseWriter, r *http.Request, ps Params) {
 	tid, err := strconv.Atoi(ps.ByName("tid"))
 	if err != nil {
 		ERRRequest(w, "invalid tid")
@@ -94,7 +92,7 @@ func taskUpdate(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	OK(w, task)
 }
 
-func taskDelete(w http.ResponseWriter, _ *http.Request, ps httprouter.Params) {
+func taskDelete(w http.ResponseWriter, _ *http.Request, ps Params) {
 	tid, err := strconv.Atoi(ps.ByName("tid"))
 	if err != nil {
 		ERRRequest(w, "invalid tid")

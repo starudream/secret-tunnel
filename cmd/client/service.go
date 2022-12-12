@@ -7,6 +7,7 @@ import (
 	"github.com/starudream/go-lib/log"
 
 	"github.com/starudream/secret-tunnel/client"
+
 	"github.com/starudream/secret-tunnel/internal/osx"
 	"github.com/starudream/secret-tunnel/internal/service"
 )

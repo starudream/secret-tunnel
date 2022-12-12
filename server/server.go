@@ -13,9 +13,10 @@ import (
 	"github.com/starudream/go-lib/seq"
 
 	"github.com/starudream/secret-tunnel/constant"
-	"github.com/starudream/secret-tunnel/internal/netx"
 	"github.com/starudream/secret-tunnel/message"
 	"github.com/starudream/secret-tunnel/model"
+
+	"github.com/starudream/secret-tunnel/internal/netx"
 )
 
 var COMM chan any
