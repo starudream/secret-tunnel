@@ -1,8 +1,8 @@
 # Secret-Tunnel
 
-![Golang](https://img.shields.io/github/workflow/status/starudream/secret-tunnel/Golang/master?label=Golang&style=for-the-badge)
-![Docker](https://img.shields.io/github/workflow/status/starudream/secret-tunnel/Docker/master?label=Docker&style=for-the-badge)
-![Release](https://img.shields.io/github/v/release/starudream/secret-tunnel?include_prereleases&style=for-the-badge)
+![Golang](https://img.shields.io/github/actions/workflow/status/starudream/secret-tunnel/golang.yml?label=golang&style=for-the-badge)
+![Docker](https://img.shields.io/github/actions/workflow/status/starudream/secret-tunnel/docker.yml?label=docker&style=for-the-badge)
+![Release](https://img.shields.io/github/v/release/starudream/secret-tunnel?include_prereleases&sort=semver&style=for-the-badge)
 ![License](https://img.shields.io/github/license/starudream/secret-tunnel?style=for-the-badge)
 
 ## Usage
