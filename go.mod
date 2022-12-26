@@ -9,7 +9,7 @@ require (
 	github.com/kardianos/service v1.2.2
 	github.com/minio/selfupdate v0.5.0
 	github.com/olekukonko/tablewriter v0.0.5
-	github.com/panjf2000/ants/v2 v2.7.0
+	github.com/panjf2000/ants/v2 v2.7.1
 	github.com/spf13/cobra v1.6.1
 	github.com/starudream/go-lib v1.5.3
 	gorm.io/gorm v1.24.2
