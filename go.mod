@@ -12,7 +12,7 @@ require (
 	github.com/panjf2000/ants/v2 v2.7.0
 	github.com/spf13/cobra v1.6.1
 	github.com/starudream/go-lib v1.5.3
-	gorm.io/gorm v1.24.2
+	gorm.io/gorm v1.24.3
 )
 
 require (
