@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/starudream/secret-tunnel/compare/v1.5.2...v1.6.0) (2023-01-03)
+
+
+### Features
+
+* **deps:** bump dependencies ([21ea239](https://github.com/starudream/secret-tunnel/commit/21ea239d92a94ccd67386d243e1d18810e0aa2fa))
+
 ## [1.5.2](https://github.com/starudream/secret-tunnel/compare/v1.5.1...v1.5.2) (2022-12-12)
 
 
