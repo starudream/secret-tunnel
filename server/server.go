@@ -2,13 +2,13 @@ package server
 
 import (
 	"context"
+	"errors"
 	"io"
 	"net"
 	"strings"
 	"sync"
 
 	"github.com/starudream/go-lib/config"
-	"github.com/starudream/go-lib/errx"
 	"github.com/starudream/go-lib/log"
 	"github.com/starudream/go-lib/seq"
 
@@ -152,7 +152,7 @@ func (s *Server) into(conn net.Conn) {
 	for {
 		sc, err := c.Session().Accept()
 		if err != nil {
-			if !errx.Is(err, io.EOF) && !strings.Contains(err.Error(), "use of closed network connection") {
+			if !errors.Is(err, io.EOF) && !strings.Contains(err.Error(), "use of closed network connection") {
 				log.Warn().Str("client", client.Name).Msgf("accept connection error: %v", err)
 			}
 			log.Warn().Str("client", client.Name).Msgf("client disconnected")

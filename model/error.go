@@ -6,8 +6,6 @@ import (
 	"strings"
 
 	"gorm.io/gorm"
-
-	"github.com/starudream/go-lib/errx"
 )
 
 var (
@@ -20,7 +18,7 @@ func Wrap(err error) error {
 		return nil
 	}
 
-	if errx.Is(err, sql.ErrNoRows) || errx.Is(err, gorm.ErrRecordNotFound) {
+	if errors.Is(err, sql.ErrNoRows) || errors.Is(err, gorm.ErrRecordNotFound) {
 		return ErrNoRows
 	} else {
 		es := err.Error()

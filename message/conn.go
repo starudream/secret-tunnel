@@ -3,13 +3,13 @@ package message
 import (
 	"bytes"
 	"encoding/binary"
+	"errors"
 	"fmt"
 	"io"
 	"net"
 	"reflect"
 
 	"github.com/starudream/go-lib/codec/json"
-	"github.com/starudream/go-lib/errx"
 	"github.com/starudream/go-lib/log"
 
 	"github.com/starudream/secret-tunnel/constant"
@@ -104,7 +104,7 @@ func Read(c net.Conn, sc ...int) (v any, err error) {
 
 func ReadL(c net.Conn, ls ...log.L) (v any, ne bool) {
 	v, err := Read(c, skip())
-	if err != nil && !errx.Is(err, io.EOF) {
+	if err != nil && !errors.Is(err, io.EOF) {
 		l := log.Logger()
 		if len(ls) > 0 {
 			l = ls[0]

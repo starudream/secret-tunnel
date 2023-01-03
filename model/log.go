@@ -2,12 +2,12 @@ package model
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 
-	"github.com/starudream/go-lib/errx"
 	"github.com/starudream/go-lib/log"
 )
 
@@ -54,7 +54,7 @@ func (i *iLogger) Trace(_ context.Context, begin time.Time, fc func() (sql strin
 		return x.Logger()
 	}()
 
-	if err != nil && !errx.Is(err, gorm.ErrRecordNotFound) {
+	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 		l.Error().Msgf("%s -->> %v", sql, err)
 	} else {
 		if elapsed > dbSlowThreshold {

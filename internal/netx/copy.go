@@ -1,13 +1,13 @@
 package netx
 
 import (
+	"errors"
 	"io"
 	"strings"
 	"sync"
 
 	"github.com/panjf2000/ants/v2"
 
-	"github.com/starudream/go-lib/errx"
 	"github.com/starudream/go-lib/log"
 
 	"github.com/starudream/secret-tunnel/constant"
@@ -66,7 +66,7 @@ func pfCopy(v any) {
 
 	var err error
 	*i.n, err = io.CopyBuffer(i.dst, i.src, buf)
-	if err != nil && !errx.Is(err, io.EOF) && !strings.Contains(err.Error(), "use of closed network connection") {
+	if err != nil && !errors.Is(err, io.EOF) && !strings.Contains(err.Error(), "use of closed network connection") {
 		log.Warn().Msgf("copy buffer error: %v", err)
 	}
 }
