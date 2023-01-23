@@ -9,7 +9,7 @@ require (
 	github.com/hashicorp/yamux v0.1.1
 	github.com/julienschmidt/httprouter v1.3.0
 	github.com/kardianos/service v1.2.2
-	github.com/minio/selfupdate v0.5.0
+	github.com/minio/selfupdate v0.6.0
 	github.com/olekukonko/tablewriter v0.0.5
 	github.com/panjf2000/ants/v2 v2.7.1
 	github.com/spf13/cobra v1.6.1
@@ -18,6 +18,7 @@ require (
 )
 
 require (
+	aead.dev/minisign v0.2.0 // indirect
 	github.com/brianvoe/gofakeit/v6 v6.20.1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dustin/go-humanize v1.0.0 // indirect
