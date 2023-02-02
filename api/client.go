@@ -1,8 +1,10 @@
 package api
 
 import (
-	"net/http"
 	"strconv"
+
+	"github.com/starudream/go-lib/errx"
+	"github.com/starudream/go-lib/router"
 
 	"github.com/starudream/secret-tunnel/model"
 )
@@ -12,62 +14,61 @@ type clientReq struct {
 	Key  string `json:"key,omitempty"`
 }
 
-func clientCreate(w http.ResponseWriter, r *http.Request, _ Params) {
-	req, err := V[*clientReq](w, r)
-	if err != nil {
+func clientCreate(c *router.Context) {
+	req := &clientReq{}
+	if c.BindJSON(req) != nil {
 		return
 	}
 
 	client, err := model.CreateClient(&model.Client{Name: req.Name})
 	if err != nil {
-		ERRInternal(w, model.Wrap(err).Error())
+		c.Error(errx.From(model.Wrap(err)))
 		return
 	}
 
-	OK(w, client)
+	c.OK(client)
 }
 
-func clientGet(w http.ResponseWriter, _ *http.Request, ps Params) {
-	cid, err := strconv.Atoi(ps.ByName("cid"))
+func clientGet(c *router.Context) {
+	cid, err := strconv.Atoi(c.Param("cid"))
 	if err != nil {
-		ERRRequest(w, "invalid cid")
 		return
 	}
 
 	client, err := model.GetClientById(uint(cid))
 	if err != nil {
-		ERRInternal(w, model.Wrap(err).Error())
+		c.Error(errx.From(model.Wrap(err)))
 		return
 	}
 
-	OK(w, client)
+	c.OK(client)
 }
 
-func clientList(w http.ResponseWriter, _ *http.Request, _ Params) {
+func clientList(c *router.Context) {
 	clients, err := model.ListClient()
 	if err != nil {
-		ERRInternal(w, model.Wrap(err).Error())
+		c.Error(errx.From(model.Wrap(err)))
 		return
 	}
 
-	OK(w, clients)
+	c.OK(clients)
 }
 
-func clientUpdate(w http.ResponseWriter, r *http.Request, ps Params) {
-	cid, err := strconv.Atoi(ps.ByName("cid"))
+func clientUpdate(c *router.Context) {
+	cid, err := strconv.Atoi(c.Param("cid"))
 	if err != nil {
-		ERRRequest(w, "invalid cid")
+		c.Error(errx.ErrParam.WithMessage("invalid cid"))
 		return
 	}
 
 	client, err := model.GetClientById(uint(cid))
 	if err != nil {
-		ERRInternal(w, model.Wrap(err).Error())
+		c.Error(errx.From(model.Wrap(err)))
 		return
 	}
 
-	req, err := V[*clientReq](w, r)
-	if err != nil {
+	req := &clientReq{}
+	if c.BindJSON(req) != nil {
 		return
 	}
 
@@ -75,31 +76,31 @@ func clientUpdate(w http.ResponseWriter, r *http.Request, ps Params) {
 
 	client, err = model.UpdateClient(client)
 	if err != nil {
-		ERRInternal(w, model.Wrap(err).Error())
+		c.Error(errx.From(model.Wrap(err)))
 		return
 	}
 
-	OK(w, client)
+	c.OK(client)
 }
 
-func clientDelete(w http.ResponseWriter, _ *http.Request, ps Params) {
-	cid, err := strconv.Atoi(ps.ByName("cid"))
+func clientDelete(c *router.Context) {
+	cid, err := strconv.Atoi(c.Param("cid"))
 	if err != nil {
-		ERRRequest(w, "invalid cid")
+		c.Error(errx.ErrParam.WithMessage("invalid cid"))
 		return
 	}
 
 	err = model.DeleteClient(uint(cid))
 	if err != nil {
-		ERRInternal(w, model.Wrap(err).Error())
+		c.Error(errx.From(model.Wrap(err)))
 		return
 	}
 
 	err = model.DeleteTaskByClientId(uint(cid))
 	if err != nil {
-		ERRInternal(w, model.Wrap(err).Error())
+		c.Error(errx.From(model.Wrap(err)))
 		return
 	}
 
-	OK(w)
+	c.OK()
 }

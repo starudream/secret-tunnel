@@ -1,8 +1,10 @@
 package api
 
 import (
-	"net/http"
 	"strconv"
+
+	"github.com/starudream/go-lib/errx"
+	"github.com/starudream/go-lib/router"
 
 	"github.com/starudream/secret-tunnel/model"
 )
@@ -14,69 +16,69 @@ type taskReq struct {
 	Addr     string `json:"addr" validate:"required,hostname_port"`
 }
 
-func taskCreate(w http.ResponseWriter, r *http.Request, _ Params) {
-	req, err := V[*taskReq](w, r)
-	if err != nil {
+func taskCreate(c *router.Context) {
+	req := &taskReq{}
+	if c.BindJSON(req) != nil {
 		return
 	}
 
 	if req.ClientId <= 0 {
-		ERRRequest(w, "missing client_id")
+		c.Error(errx.ErrParam.WithMessage("missing client_id"))
 		return
 	}
 
 	task, err := model.CreateTask(&model.Task{ClientId: req.ClientId, Name: req.Name, Addr: req.Addr})
 	if err != nil {
-		ERRInternal(w, model.Wrap(err).Error())
+		c.Error(errx.From(model.Wrap(err)))
 		return
 	}
 
-	OK(w, task)
+	c.OK(task)
 }
 
-func taskGet(w http.ResponseWriter, _ *http.Request, ps Params) {
-	tid, err := strconv.Atoi(ps.ByName("tid"))
+func taskGet(c *router.Context) {
+	tid, err := strconv.Atoi(c.Query("tid"))
 	if err != nil {
-		ERRRequest(w, "invalid tid")
+		c.Error(errx.ErrParam.WithMessage("invalid tid"))
 		return
 	}
 
 	task, err := model.GetTaskById(uint(tid))
 	if err != nil {
-		ERRInternal(w, model.Wrap(err).Error())
+		c.Error(errx.From(model.Wrap(err)))
 		return
 	}
 
-	OK(w, task)
+	c.OK(task)
 }
 
-func taskList(w http.ResponseWriter, r *http.Request, _ Params) {
-	cid, _ := strconv.Atoi(r.URL.Query().Get("cid"))
+func taskList(c *router.Context) {
+	cid, _ := strconv.Atoi(c.Query("cid"))
 
 	tasks, err := model.ListTaskByClientId(uint(cid))
 	if err != nil {
-		ERRInternal(w, model.Wrap(err).Error())
+		c.Error(errx.From(model.Wrap(err)))
 		return
 	}
 
-	OK(w, tasks)
+	c.OK(tasks)
 }
 
-func taskUpdate(w http.ResponseWriter, r *http.Request, ps Params) {
-	tid, err := strconv.Atoi(ps.ByName("tid"))
+func taskUpdate(c *router.Context) {
+	tid, err := strconv.Atoi(c.Param("tid"))
 	if err != nil {
-		ERRRequest(w, "invalid tid")
+		c.Error(errx.ErrParam.WithMessage("invalid tid"))
 		return
 	}
 
 	task, err := model.GetTaskById(uint(tid))
 	if err != nil {
-		ERRInternal(w, model.Wrap(err).Error())
+		c.Error(errx.From(model.Wrap(err)))
 		return
 	}
 
-	req, err := V[*taskReq](w, r)
-	if err != nil {
+	req := &taskReq{}
+	if c.BindJSON(req) != nil {
 		return
 	}
 
@@ -85,25 +87,25 @@ func taskUpdate(w http.ResponseWriter, r *http.Request, ps Params) {
 
 	task, err = model.UpdateTask(task)
 	if err != nil {
-		ERRInternal(w, model.Wrap(err).Error())
+		c.Error(errx.From(model.Wrap(err)))
 		return
 	}
 
-	OK(w, task)
+	c.OK(task)
 }
 
-func taskDelete(w http.ResponseWriter, _ *http.Request, ps Params) {
-	tid, err := strconv.Atoi(ps.ByName("tid"))
+func taskDelete(c *router.Context) {
+	tid, err := strconv.Atoi(c.Query("tid"))
 	if err != nil {
-		ERRRequest(w, "invalid tid")
+		c.Error(errx.ErrParam.WithMessage("invalid tid"))
 		return
 	}
 
 	err = model.DeleteTask(uint(tid))
 	if err != nil {
-		ERRInternal(w, model.Wrap(err).Error())
+		c.Error(errx.From(model.Wrap(err)))
 		return
 	}
 
-	OK(w)
+	c.OK()
 }
