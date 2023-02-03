@@ -10,8 +10,8 @@ require (
 	github.com/olekukonko/tablewriter v0.0.5
 	github.com/panjf2000/ants/v2 v2.7.1
 	github.com/spf13/cobra v1.6.1
-	github.com/starudream/go-lib v1.10.1
-	gorm.io/gorm v1.24.4
+	github.com/starudream/go-lib v1.10.2
+	gorm.io/gorm v1.24.5
 )
 
 require (
