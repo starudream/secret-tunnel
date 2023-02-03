@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.6.1](https://github.com/starudream/secret-tunnel/compare/v1.6.0...v1.6.1) (2023-02-03)
+
+
+### Performance Improvements
+
+* **api:** perfect api ([00b39b4](https://github.com/starudream/secret-tunnel/commit/00b39b4b4d96036ee3c073ce6cae5caad339db74))
+* perfect ([e62e698](https://github.com/starudream/secret-tunnel/commit/e62e6989dd830484496b4e35346f767c3770362f))
+
 ## [1.6.0](https://github.com/starudream/secret-tunnel/compare/v1.5.2...v1.6.0) (2023-01-03)
 
 
