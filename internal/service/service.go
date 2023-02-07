@@ -16,6 +16,10 @@ func Get(i service.Interface) service.Service {
 	serviceKV := service.KeyValue{}
 	serviceKV["UserService"] = config.GetBool("user")
 
+	serviceKV["DelayedAutoStart"] = true
+	serviceKV["OnFailure"] = "restart"
+	serviceKV["OnFailureResetPeriod"] = 30
+
 	envVars := map[string]string{}
 	envVars[constant.PREFIX+"_USER"] = config.GetString("user")
 
