@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.2](https://github.com/starudream/secret-tunnel/compare/v1.6.1...v1.6.2) (2023-02-07)
+
+
+### Bug Fixes
+
+* **service:** fix windows boot start ([15a3be1](https://github.com/starudream/secret-tunnel/commit/15a3be1bf2850102e3cafe0dab55171627b963b1))
+
 ## [1.6.1](https://github.com/starudream/secret-tunnel/compare/v1.6.0...v1.6.1) (2023-02-03)
 
 
