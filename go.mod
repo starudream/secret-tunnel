@@ -3,7 +3,7 @@ module github.com/starudream/secret-tunnel
 go 1.18
 
 require (
-	github.com/glebarez/sqlite v1.6.0
+	github.com/glebarez/sqlite v1.7.0
 	github.com/golang/snappy v0.0.4
 	github.com/hashicorp/yamux v0.1.1
 	github.com/kardianos/service v1.2.2
