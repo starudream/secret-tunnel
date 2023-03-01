@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/starudream/secret-tunnel/compare/v1.6.2...v1.7.0) (2023-03-01)
+
+
+### Features
+
+* add bot ([60b5071](https://github.com/starudream/secret-tunnel/commit/60b50713a1bbc58d6108536d18101c706027c9d6))
+
 ## [1.6.2](https://github.com/starudream/secret-tunnel/compare/v1.6.1...v1.6.2) (2023-02-07)
 
 
