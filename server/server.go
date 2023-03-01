@@ -8,6 +8,7 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/starudream/go-lib/bot"
 	"github.com/starudream/go-lib/config"
 	"github.com/starudream/go-lib/log"
 	"github.com/starudream/go-lib/seq"
@@ -147,6 +148,8 @@ func (s *Server) into(conn net.Conn) {
 
 	log.Info().Str("client", client.Name).Msgf("client login success")
 
+	go func() { _ = bot.Send(client.Name + " online") }()
+
 	c := netx.New(conn, true)
 
 	for {
@@ -157,6 +160,7 @@ func (s *Server) into(conn net.Conn) {
 			}
 			log.Warn().Str("client", client.Name).Msgf("client disconnected")
 			c.Close()
+			go func() { _ = bot.Send(client.Name + " offline") }()
 			go func() {
 				ue := model.UpdateClientOffline(client.Id)
 				if ue != nil {
