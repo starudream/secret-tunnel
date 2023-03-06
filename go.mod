@@ -11,7 +11,7 @@ require (
 	github.com/panjf2000/ants/v2 v2.7.1
 	github.com/spf13/cobra v1.6.1
 	github.com/starudream/go-lib v1.11.1
-	gorm.io/gorm v1.24.5
+	gorm.io/gorm v1.24.6
 )
 
 require (
