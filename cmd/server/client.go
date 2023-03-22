@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/spf13/cobra"
+	"github.com/starudream/go-lib/flag"
 
 	"github.com/starudream/secret-tunnel/model"
 
@@ -10,31 +10,31 @@ import (
 )
 
 var (
-	clientCmd = &cobra.Command{
+	clientCmd = &flag.Command{
 		Use:   "client",
 		Short: "Manage clients",
-		Args:  cobra.MinimumNArgs(1),
+		Args:  flag.MinimumNArgs(1),
 	}
 
-	clientCreateCmd = &cobra.Command{
+	clientCreateCmd = &flag.Command{
 		Use:   "create",
 		Short: "Create client",
-		PreRun: func(cmd *cobra.Command, args []string) {
+		PreRun: func(cmd *flag.Command, args []string) {
 			osx.PE(model.Init())
 		},
-		Run: func(cmd *cobra.Command, args []string) {
+		Run: func(cmd *flag.Command, args []string) {
 			client, err := model.CreateClient(&model.Client{Name: clientName})
 			osx.PA(err, tablew.PrintStruct(client))
 		},
 	}
 
-	clientListCmd = &cobra.Command{
+	clientListCmd = &flag.Command{
 		Use:   "list",
 		Short: "List client",
-		PreRun: func(cmd *cobra.Command, args []string) {
+		PreRun: func(cmd *flag.Command, args []string) {
 			osx.PE(model.Init())
 		},
-		Run: func(cmd *cobra.Command, args []string) {
+		Run: func(cmd *flag.Command, args []string) {
 			clients, err := model.ListClient()
 			osx.PA(err, tablew.PrintStructs(clients))
 		},

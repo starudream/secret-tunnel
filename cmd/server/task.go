@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/spf13/cobra"
+	"github.com/starudream/go-lib/flag"
 
 	"github.com/starudream/secret-tunnel/model"
 
@@ -10,19 +10,19 @@ import (
 )
 
 var (
-	taskCmd = &cobra.Command{
+	taskCmd = &flag.Command{
 		Use:   "task",
 		Short: "Manage tasks",
-		Args:  cobra.MinimumNArgs(1),
+		Args:  flag.MinimumNArgs(1),
 	}
 
-	taskCreateCmd = &cobra.Command{
+	taskCreateCmd = &flag.Command{
 		Use:   "create",
 		Short: "Create task",
-		PreRun: func(cmd *cobra.Command, args []string) {
+		PreRun: func(cmd *flag.Command, args []string) {
 			osx.PE(model.Init())
 		},
-		Run: func(cmd *cobra.Command, args []string) {
+		Run: func(cmd *flag.Command, args []string) {
 			client, err := model.GetClientById(taskClientId)
 			osx.PE(err, tablew.PrintStruct(client))
 			task, err := model.CreateTask(&model.Task{ClientId: taskClientId, Name: taskName, Addr: taskAddr})
@@ -30,13 +30,13 @@ var (
 		},
 	}
 
-	taskListCmd = &cobra.Command{
+	taskListCmd = &flag.Command{
 		Use:   "list",
 		Short: "List task",
-		PreRun: func(cmd *cobra.Command, args []string) {
+		PreRun: func(cmd *flag.Command, args []string) {
 			osx.PE(model.Init())
 		},
-		Run: func(cmd *cobra.Command, args []string) {
+		Run: func(cmd *flag.Command, args []string) {
 			tasks, err := model.ListTaskByClientId(taskClientId)
 			osx.PA(err, tablew.PrintStructs(tasks))
 		},

@@ -3,10 +3,9 @@ package main
 import (
 	"os"
 
-	"github.com/spf13/cobra"
-
 	"github.com/starudream/go-lib/app"
 	"github.com/starudream/go-lib/config"
+	"github.com/starudream/go-lib/flag"
 	"github.com/starudream/go-lib/log"
 
 	"github.com/starudream/secret-tunnel/client"
@@ -15,17 +14,17 @@ import (
 	"github.com/starudream/secret-tunnel/internal/osx"
 )
 
-var rootCmd = &cobra.Command{
+var rootCmd = &flag.Command{
 	Use:     "client",
 	Version: constant.VERSION + " (" + constant.BIDTIME + ")",
-	Run: func(cmd *cobra.Command, args []string) {
+	Run: func(cmd *flag.Command, args []string) {
 		app.Add(client.Start)
 		err := app.OnceGo()
 		if err != nil {
 			log.Error().Msgf("client init error: %v", err)
 		}
 	},
-	CompletionOptions: cobra.CompletionOptions{
+	CompletionOptions: flag.CompletionOptions{
 		DisableDefaultCmd: true,
 	},
 }
