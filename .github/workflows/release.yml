@@ -22,17 +22,9 @@ jobs:
       - name: Checkout
         if: ${{ steps.prepare.outputs.release_created }}
         uses: actions/checkout@v3
-      - name: Cache
-        if: ${{ steps.prepare.outputs.release_created }}
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.cache/go-build
-            ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
       - name: Go
         if: ${{ steps.prepare.outputs.release_created }}
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v4
         with:
           go-version: '1.20'
       - name: Build
