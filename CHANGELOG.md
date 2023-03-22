@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.7.1](https://github.com/starudream/secret-tunnel/compare/v1.7.0...v1.7.1) (2023-03-22)
+
+
+### Bug Fixes
+
+* **ci:** fix cache ([d66727c](https://github.com/starudream/secret-tunnel/commit/d66727c2090fe2de1e1b700104188b1a292dbbf7))
+* fix startup ([4faa291](https://github.com/starudream/secret-tunnel/commit/4faa291ec939e021fa4dc029845759c277e271c4))
+
+
+### Performance Improvements
+
+* **ci:** use setup go v4 ([dfb4ab5](https://github.com/starudream/secret-tunnel/commit/dfb4ab51cee5f68b9d69d7c302d7783d98a0f27e))
+
 ## [1.7.0](https://github.com/starudream/secret-tunnel/compare/v1.6.2...v1.7.0) (2023-03-01)
 
 
