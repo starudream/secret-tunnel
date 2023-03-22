@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.2](https://github.com/starudream/secret-tunnel/compare/v1.7.1...v1.7.2) (2023-03-22)
+
+
+### Performance Improvements
+
+* **ci:** setup go v4 ([8f74ca1](https://github.com/starudream/secret-tunnel/commit/8f74ca191f4e57abd162957fb363769dc11fec49))
+
 ## [1.7.1](https://github.com/starudream/secret-tunnel/compare/v1.7.0...v1.7.1) (2023-03-22)
 
 
