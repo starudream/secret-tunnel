@@ -8,7 +8,7 @@ require (
 	github.com/hashicorp/yamux v0.1.1
 	github.com/kardianos/service v1.2.2
 	github.com/olekukonko/tablewriter v0.0.5
-	github.com/panjf2000/ants/v2 v2.7.1
+	github.com/panjf2000/ants/v2 v2.7.3
 	github.com/starudream/go-lib v1.12.0
 	gorm.io/gorm v1.24.6
 )
