@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.3](https://github.com/starudream/secret-tunnel/compare/v1.7.2...v1.7.3) (2023-04-24)
+
+
+### Performance Improvements
+
+* **deps:** bump ([e6ed2e8](https://github.com/starudream/secret-tunnel/commit/e6ed2e8f73f8f5e2752cbdd0515a874623417a60))
+
 ## [1.7.2](https://github.com/starudream/secret-tunnel/compare/v1.7.1...v1.7.2) (2023-03-22)
 
 
