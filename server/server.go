@@ -265,7 +265,11 @@ func (s *Server) work(w *iWork) (no bool) {
 				continue
 			}
 			log.Debug().Str("client", w.client.Name).Str("task", c.task.Name).Msgf("task new connection")
-			netx.Copy(w.conn, c.conn, "client", w.client.Name, "task", c.task.Name)
+			in, out := netx.Copy(w.conn, c.conn, "client", w.client.Name, "task", c.task.Name)
+			err := model.UpdateTaskTraffic(c.task.Id, uint(in), uint(out))
+			if err != nil {
+				log.Warn().Str("client", w.client.Name).Str("task", c.task.Name).Msgf("update task traffic error: %v", err)
+			}
 			s.workMu.Lock()
 			delete(s.cs, x.Sid)
 			s.workMu.Unlock()

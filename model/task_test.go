@@ -32,6 +32,9 @@ func TestTask(t *testing.T) {
 	err = UpdateTaskCompress(task.Id, true)
 	testx.P(t, err)
 
+	err = UpdateTaskTraffic(task.Id, 100, 200)
+	testx.P(t, err)
+
 	task, err = GetTaskBySecret(client.Id, task.Secret)
 	testx.P(t, err, task)
 
