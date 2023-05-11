@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.1](https://github.com/starudream/secret-tunnel/compare/v1.8.0...v1.8.1) (2023-05-11)
+
+
+### Performance Improvements
+
+* perfect task list order ([1673e97](https://github.com/starudream/secret-tunnel/commit/1673e97be3e258be39d4471235517d26cdbb8ff4))
+
 ## [1.8.0](https://github.com/starudream/secret-tunnel/compare/v1.7.3...v1.8.0) (2023-05-11)
 
 
