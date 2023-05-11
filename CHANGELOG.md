@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/starudream/secret-tunnel/compare/v1.7.3...v1.8.0) (2023-05-11)
+
+
+### Features
+
+* add traffic stats ([0cea082](https://github.com/starudream/secret-tunnel/commit/0cea08228de79adf88b1d07242e65e14395e4d4c))
+
 ## [1.7.3](https://github.com/starudream/secret-tunnel/compare/v1.7.2...v1.7.3) (2023-04-24)
 
 
