@@ -8,7 +8,7 @@ require (
 	github.com/hashicorp/yamux v0.1.1
 	github.com/kardianos/service v1.2.2
 	github.com/olekukonko/tablewriter v0.0.5
-	github.com/panjf2000/ants/v2 v2.7.3
+	github.com/panjf2000/ants/v2 v2.7.4
 	github.com/starudream/go-lib v1.12.5
 	gorm.io/gorm v1.25.1
 )
@@ -42,7 +42,7 @@ require (
 	github.com/rivo/uniseg v0.4.4 // indirect
 	github.com/rs/zerolog v1.29.1 // indirect
 	github.com/spf13/afero v1.9.5 // indirect
-	github.com/spf13/cast v1.5.0 // indirect
+	github.com/spf13/cast v1.5.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/stretchr/testify v1.8.2 // indirect
 	golang.org/x/crypto v0.9.0 // indirect
