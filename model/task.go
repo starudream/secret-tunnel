@@ -16,8 +16,8 @@ type Task struct {
 	Addr       string `json:"addr"`
 	Active     bool   `json:"active" gorm:"default:true"`
 	Compress   bool   `json:"compress"`
-	TrafficIn  uint   `json:"traffic_in" gorm:"default:0"`
-	TrafficOut uint   `json:"traffic_out" gorm:"default:0"`
+	TrafficIn  Size   `json:"traffic_in" gorm:"default:0"`
+	TrafficOut Size   `json:"traffic_out" gorm:"default:0"`
 
 	CreateAt time.Time `json:"create_at" gorm:"autoCreateTime:milli"`
 	UpdateAt time.Time `json:"update_at" gorm:"autoUpdateTime:milli"`
