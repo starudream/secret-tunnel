@@ -47,6 +47,7 @@ func init() {
 
 	rootCmd.AddCommand(clientCmd)
 	rootCmd.AddCommand(taskCmd)
+	rootCmd.AddCommand(updateCmd)
 }
 
 func main() {

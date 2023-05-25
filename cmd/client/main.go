@@ -40,6 +40,7 @@ func init() {
 	osx.PE(config.BindPFlag("dns", rootCmd.PersistentFlags().Lookup("dns")))
 
 	rootCmd.AddCommand(serviceCmd)
+	rootCmd.AddCommand(updateCmd)
 }
 
 func main() {
