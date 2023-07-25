@@ -81,7 +81,6 @@ dockers:
       - "ghcr.io/starudream/secret-tunnel-client:{{ .Tag }}-amd64"
     build_flag_templates:
       - "--pull"
-      - "--builder=desktop-linux"
       - "--platform=linux/amd64"
       - "--label=org.opencontainers.image.created={{ .Date }}"
       - "--label=org.opencontainers.image.title={{ .ProjectName }}"
@@ -101,7 +100,6 @@ dockers:
       - "ghcr.io/starudream/secret-tunnel-client:{{ .Tag }}-arm64"
     build_flag_templates:
       - "--pull"
-      - "--builder=desktop-linux"
       - "--platform=linux/arm64"
       - "--label=org.opencontainers.image.created={{ .Date }}"
       - "--label=org.opencontainers.image.title={{ .ProjectName }}"
@@ -122,7 +120,6 @@ dockers:
       - "ghcr.io/starudream/secret-tunnel-server:{{ .Tag }}-amd64"
     build_flag_templates:
       - "--pull"
-      - "--builder=desktop-linux"
       - "--platform=linux/amd64"
       - "--label=org.opencontainers.image.created={{ .Date }}"
       - "--label=org.opencontainers.image.title={{ .ProjectName }}"
@@ -142,7 +139,6 @@ dockers:
       - "ghcr.io/starudream/secret-tunnel-server:{{ .Tag }}-arm64"
     build_flag_templates:
       - "--pull"
-      - "--builder=desktop-linux"
       - "--platform=linux/arm64"
       - "--label=org.opencontainers.image.created={{ .Date }}"
       - "--label=org.opencontainers.image.title={{ .ProjectName }}"
