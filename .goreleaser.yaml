@@ -48,9 +48,6 @@ builds:
       - -X "github.com/starudream/go-lib/constant.NAME=secret-tunnel"
       - -X "github.com/starudream/go-lib/constant.PREFIX=ST"
 
-upx:
-  - enabled: true
-
 archives:
   - id: secret-tunnel-client
     builds:
