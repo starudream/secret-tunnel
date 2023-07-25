@@ -8,9 +8,6 @@ before:
 snapshot:
   name_template: "{{ .Version }}-next"
 
-#gomod:
-#  proxy: true
-
 report_sizes: true
 
 builds:
@@ -48,8 +45,11 @@ builds:
       - -s -w
       - -X "github.com/starudream/go-lib/constant.VERSION=v{{ .Version }}"
       - -X "github.com/starudream/go-lib/constant.BIDTIME={{ .Date }}"
-      - -X "github.com/starudream/go-lib/constant.NAME="
+      - -X "github.com/starudream/go-lib/constant.NAME=secret-tunnel"
       - -X "github.com/starudream/go-lib/constant.PREFIX=ST"
+
+upx:
+  - enabled: true
 
 archives:
   - id: secret-tunnel-client
@@ -68,6 +68,124 @@ archives:
     format_overrides:
       - goos: windows
         format: zip
+
+dockers:
+  - goos: linux
+    goarch: amd64
+    dockerfile: Dockerfile-client
+    use: buildx
+    image_templates:
+      - "starudream/secret-tunnel-client:latest-amd64"
+      - "starudream/secret-tunnel-client:{{ .Tag }}-amd64"
+      - "ghcr.io/starudream/secret-tunnel-client:latest-amd64"
+      - "ghcr.io/starudream/secret-tunnel-client:{{ .Tag }}-amd64"
+    build_flag_templates:
+      - "--pull"
+      - "--builder=desktop-linux"
+      - "--platform=linux/amd64"
+      - "--label=org.opencontainers.image.created={{ .Date }}"
+      - "--label=org.opencontainers.image.title={{ .ProjectName }}"
+      - "--label=org.opencontainers.image.revision={{ .FullCommit }}"
+      - "--label=org.opencontainers.image.version={{ .Version }}"
+      - "--label=org.opencontainers.image.source={{ .GitURL }}"
+      - "--label=org.opencontainers.image.url={{ .GitURL }}"
+      - "--label=org.opencontainers.image.licenses=Apache-2.0"
+  - goos: linux
+    goarch: arm64
+    dockerfile: Dockerfile-client
+    use: buildx
+    image_templates:
+      - "starudream/secret-tunnel-client:latest-arm64"
+      - "starudream/secret-tunnel-client:{{ .Tag }}-arm64"
+      - "ghcr.io/starudream/secret-tunnel-client:latest-arm64"
+      - "ghcr.io/starudream/secret-tunnel-client:{{ .Tag }}-arm64"
+    build_flag_templates:
+      - "--pull"
+      - "--builder=desktop-linux"
+      - "--platform=linux/arm64"
+      - "--label=org.opencontainers.image.created={{ .Date }}"
+      - "--label=org.opencontainers.image.title={{ .ProjectName }}"
+      - "--label=org.opencontainers.image.revision={{ .FullCommit }}"
+      - "--label=org.opencontainers.image.version={{ .Version }}"
+      - "--label=org.opencontainers.image.source={{ .GitURL }}"
+      - "--label=org.opencontainers.image.url={{ .GitURL }}"
+      - "--label=org.opencontainers.image.licenses=Apache-2.0"
+
+  - goos: linux
+    goarch: amd64
+    dockerfile: Dockerfile-server
+    use: buildx
+    image_templates:
+      - "starudream/secret-tunnel-server:latest-amd64"
+      - "starudream/secret-tunnel-server:{{ .Tag }}-amd64"
+      - "ghcr.io/starudream/secret-tunnel-server:latest-amd64"
+      - "ghcr.io/starudream/secret-tunnel-server:{{ .Tag }}-amd64"
+    build_flag_templates:
+      - "--pull"
+      - "--builder=desktop-linux"
+      - "--platform=linux/amd64"
+      - "--label=org.opencontainers.image.created={{ .Date }}"
+      - "--label=org.opencontainers.image.title={{ .ProjectName }}"
+      - "--label=org.opencontainers.image.revision={{ .FullCommit }}"
+      - "--label=org.opencontainers.image.version={{ .Version }}"
+      - "--label=org.opencontainers.image.source={{ .GitURL }}"
+      - "--label=org.opencontainers.image.url={{ .GitURL }}"
+      - "--label=org.opencontainers.image.licenses=Apache-2.0"
+  - goos: linux
+    goarch: arm64
+    dockerfile: Dockerfile-server
+    use: buildx
+    image_templates:
+      - "starudream/secret-tunnel-server:latest-arm64"
+      - "starudream/secret-tunnel-server:{{ .Tag }}-arm64"
+      - "ghcr.io/starudream/secret-tunnel-server:latest-arm64"
+      - "ghcr.io/starudream/secret-tunnel-server:{{ .Tag }}-arm64"
+    build_flag_templates:
+      - "--pull"
+      - "--builder=desktop-linux"
+      - "--platform=linux/arm64"
+      - "--label=org.opencontainers.image.created={{ .Date }}"
+      - "--label=org.opencontainers.image.title={{ .ProjectName }}"
+      - "--label=org.opencontainers.image.revision={{ .FullCommit }}"
+      - "--label=org.opencontainers.image.version={{ .Version }}"
+      - "--label=org.opencontainers.image.source={{ .GitURL }}"
+      - "--label=org.opencontainers.image.url={{ .GitURL }}"
+      - "--label=org.opencontainers.image.licenses=Apache-2.0"
+
+docker_manifests:
+  - name_template: "starudream/secret-tunnel-client:latest"
+    image_templates:
+      - "starudream/secret-tunnel-client:latest-amd64"
+      - "starudream/secret-tunnel-client:latest-arm64"
+  - name_template: "starudream/secret-tunnel-client:{{ .Tag }}"
+    image_templates:
+      - "starudream/secret-tunnel-client:{{ .Tag }}-amd64"
+      - "starudream/secret-tunnel-client:{{ .Tag }}-arm64"
+  - name_template: "ghcr.io/starudream/secret-tunnel-client:latest"
+    image_templates:
+      - "ghcr.io/starudream/secret-tunnel-client:latest-amd64"
+      - "ghcr.io/starudream/secret-tunnel-client:latest-arm64"
+  - name_template: "ghcr.io/starudream/secret-tunnel-client:{{ .Tag }}"
+    image_templates:
+      - "ghcr.io/starudream/secret-tunnel-client:{{ .Tag }}-amd64"
+      - "ghcr.io/starudream/secret-tunnel-client:{{ .Tag }}-arm64"
+
+  - name_template: "starudream/secret-tunnel-server:latest"
+    image_templates:
+      - "starudream/secret-tunnel-server:latest-amd64"
+      - "starudream/secret-tunnel-server:latest-arm64"
+  - name_template: "starudream/secret-tunnel-server:{{ .Tag }}"
+    image_templates:
+      - "starudream/secret-tunnel-server:{{ .Tag }}-amd64"
+      - "starudream/secret-tunnel-server:{{ .Tag }}-arm64"
+  - name_template: "ghcr.io/starudream/secret-tunnel-server:latest"
+    image_templates:
+      - "ghcr.io/starudream/secret-tunnel-server:latest-amd64"
+      - "ghcr.io/starudream/secret-tunnel-server:latest-arm64"
+  - name_template: "ghcr.io/starudream/secret-tunnel-server:{{ .Tag }}"
+    image_templates:
+      - "ghcr.io/starudream/secret-tunnel-server:{{ .Tag }}-amd64"
+      - "ghcr.io/starudream/secret-tunnel-server:{{ .Tag }}-arm64"
 
 checksum:
   name_template: "checksums.txt"
