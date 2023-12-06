@@ -3,11 +3,11 @@ module github.com/starudream/secret-tunnel
 go 1.21
 
 require (
-	github.com/starudream/go-lib/cobra/v2 v2.0.4
-	github.com/starudream/go-lib/core/v2 v2.0.13
+	github.com/starudream/go-lib/cobra/v2 v2.0.5
+	github.com/starudream/go-lib/core/v2 v2.0.14
 	github.com/starudream/go-lib/ntfy/v2 v2.0.7
 	github.com/starudream/go-lib/selfupdate/v2 v2.0.1
-	github.com/starudream/go-lib/service/v2 v2.0.1
+	github.com/starudream/go-lib/service/v2 v2.0.2
 	github.com/starudream/go-lib/sqlite/v2 v2.0.1
 	github.com/starudream/go-lib/tablew/v2 v2.0.5
 )
