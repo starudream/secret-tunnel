@@ -1,0 +1,9 @@
+title 注册
+
+participant 客户端
+participant 服务端
+
+客户端->服务端:LoginReq
+服务端->客户端:LoginResp
+客户端->服务端:WorkReq
+服务端->客户端:WorkResp

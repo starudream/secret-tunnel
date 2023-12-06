@@ -1,0 +1,7 @@
+FROM starudream/alpine
+
+WORKDIR /
+
+COPY sts /sts
+
+CMD /sts

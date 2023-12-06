@@ -1,0 +1,28 @@
+title 通讯
+
+participantgroup **同一网络环境**
+participant 远程
+participant 发送端
+end
+
+participant 服务端
+
+participantgroup **同一网络环境**
+participant 接收端
+participant 本地
+end
+
+parallel
+note over 本地:tid
+note over 接收端:wid
+parallel off
+
+autonumber 1
+
+接收端->本地:listen
+接收端->服务端:ConnectTaskReq
+note over 服务端:sid
+服务端->发送端:CreateTaskReq
+发送端->远程:dial
+发送端->服务端:CreateTaskResp
+服务端->接收端:ConnectTaskResp
