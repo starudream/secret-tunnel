@@ -55,6 +55,10 @@ func UpdateClientOffline(id uint) error {
 	return sqlite.DB().Model(&Client{}).Where("id=?", id).Update("online", false).Error
 }
 
+func UpdateAllClientOffline() error {
+	return sqlite.DB().Model(&Client{}).UpdateColumn("online", false).Error
+}
+
 func GetClientById(id uint) (*Client, error) {
 	v := &Client{}
 	return v, sqlite.DB().First(v, "id=?", id).Error
