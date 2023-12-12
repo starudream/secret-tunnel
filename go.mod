@@ -52,7 +52,7 @@ require (
 	github.com/spf13/cobra v1.8.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/starudream/go-lib/resty/v2 v2.0.7 // indirect
-	golang.org/x/exp v0.0.0-20231127185646-65229373498e // indirect
+	golang.org/x/exp v0.0.0-20231206192017-f3f8817b8deb // indirect
 	golang.org/x/mod v0.14.0 // indirect
 	golang.org/x/net v0.19.0 // indirect
 	golang.org/x/sync v0.5.0 // indirect
@@ -64,7 +64,7 @@ require (
 	lukechampine.com/uint128 v1.3.0 // indirect
 	modernc.org/cc/v3 v3.41.0 // indirect
 	modernc.org/ccgo/v3 v3.16.15 // indirect
-	modernc.org/libc v1.36.0 // indirect
+	modernc.org/libc v1.37.0 // indirect
 	modernc.org/mathutil v1.6.0 // indirect
 	modernc.org/memory v1.7.2 // indirect
 	modernc.org/opt v0.1.3 // indirect
