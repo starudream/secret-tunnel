@@ -24,7 +24,7 @@ func Copy(c1, c2 io.ReadWriteCloser) (in, out int64) {
 	return
 }
 
-var copyPool = poolutil.NewBytes(4*MaxSize, 100)
+var copyPool = poolutil.NewBytes(100, 1024*MaxSize)
 
 func copyFn(dst, src io.ReadWriteCloser) int64 {
 	buf := copyPool.Get()
