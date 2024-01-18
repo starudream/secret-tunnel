@@ -27,7 +27,7 @@ func NewMuxConn(c net.Conn, isServer bool) *MuxConn {
 	sess := func() *yamux.Session {
 		cfg := &yamux.Config{
 			AcceptBacklog:          1024,
-			EnableKeepAlive:        false,
+			EnableKeepAlive:        true,
 			KeepAliveInterval:      30 * time.Second,
 			ConnectionWriteTimeout: 10 * time.Second,
 			MaxStreamWindowSize:    256 * 1024,
