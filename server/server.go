@@ -47,6 +47,8 @@ func Run() (err error) {
 		addr: config.Get("addr").String(),
 	}
 
+	gh.Silently(model.UpdateAllClientOffline())
+
 	s.ln, err = net.Listen("tcp", s.addr)
 	if err != nil {
 		return
