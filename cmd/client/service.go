@@ -7,6 +7,8 @@ import (
 	"github.com/starudream/go-lib/core/v2/config"
 	"github.com/starudream/go-lib/core/v2/slog"
 	"github.com/starudream/go-lib/service/v2"
+
+	"github.com/starudream/secret-tunnel/client"
 )
 
 func init() {
@@ -18,7 +20,7 @@ func init() {
 }
 
 func serviceRun(context.Context) {
-	err := runClient()
+	err := client.Run()
 	if err != nil {
 		slog.Error("client run error: %v", err)
 	}
