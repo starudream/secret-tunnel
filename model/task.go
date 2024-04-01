@@ -26,6 +26,7 @@ type Task struct {
 func CreateTask(task *Task) (*Task, error) {
 	task.Secret = util.UUIDShort()
 	task.Active = true
+	task.Compress = true
 	return task, sqlite.DB().Select("client_id", "name", "secret", "addr").Create(task).Error
 }
 
