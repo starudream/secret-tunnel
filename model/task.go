@@ -19,8 +19,8 @@ type Task struct {
 	TrafficIn  Size   `json:"traffic_in" gorm:"default:0"`
 	TrafficOut Size   `json:"traffic_out" gorm:"default:0"`
 
-	CreateAt time.Time `json:"create_at" gorm:"autoCreateTime:milli"`
-	UpdateAt time.Time `json:"update_at" gorm:"autoUpdateTime:milli"`
+	CreateAt time.Time `json:"create_at" gorm:"autoCreateTime"`
+	UpdateAt time.Time `json:"update_at" gorm:"autoUpdateTime"`
 }
 
 func CreateTask(task *Task) (*Task, error) {
@@ -73,7 +73,17 @@ func GetTaskBySecret(clientId uint, secret string) (*Task, error) {
 
 func ListTaskByClientId(clientId uint) (tasks []*Task, err error) {
 	if clientId == 0 {
-		return tasks, sqlite.DB().Order("client_id").Order("id").Find(&tasks).Error
+		err = sqlite.DB().Order("client_id").Order("id").Find(&tasks).Error
+	} else {
+		err = sqlite.DB().Order("id").Find(&tasks, "client_id=?", clientId).Error
 	}
-	return tasks, sqlite.DB().Order("id").Find(&tasks, "client_id=?", clientId).Error
+	return truncTasks(tasks), err
+}
+
+func truncTasks(tasks []*Task) []*Task {
+	for i := range tasks {
+		tasks[i].CreateAt = tasks[i].CreateAt.Local().Truncate(time.Second)
+		tasks[i].UpdateAt = tasks[i].UpdateAt.Local().Truncate(time.Second)
+	}
+	return tasks
 }

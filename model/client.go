@@ -22,8 +22,8 @@ type Client struct {
 	Hostname     string    `json:"hostname"`
 	LastOnlineAt time.Time `json:"last_online_at"`
 
-	CreateAt time.Time `json:"create_at" gorm:"autoCreateTime:milli"`
-	UpdateAt time.Time `json:"update_at" gorm:"autoUpdateTime:milli"`
+	CreateAt time.Time `json:"create_at" gorm:"autoCreateTime"`
+	UpdateAt time.Time `json:"update_at" gorm:"autoUpdateTime"`
 }
 
 func CreateClient(client *Client) (*Client, error) {
@@ -47,7 +47,6 @@ func UpdateClientActive(id uint, active bool) error {
 
 func UpdateClientOnline(client *Client) error {
 	client.Online = true
-	client.LastOnlineAt = time.Now().Truncate(time.Millisecond)
 	return sqlite.DB().Select("ver", "online", "addr", "go", "os", "arch", "hostname", "last_online_at").Updates(client).Error
 }
 
@@ -70,5 +69,15 @@ func GetClientByKey(key string) (*Client, error) {
 }
 
 func ListClient() (clients []*Client, err error) {
-	return clients, sqlite.DB().Order("id").Find(&clients).Error
+	err = sqlite.DB().Order("id").Find(&clients).Error
+	return truncClients(clients), err
+}
+
+func truncClients(clients []*Client) []*Client {
+	for i := range clients {
+		clients[i].LastOnlineAt = clients[i].LastOnlineAt.Local().Truncate(time.Second)
+		clients[i].CreateAt = clients[i].CreateAt.Local().Truncate(time.Second)
+		clients[i].UpdateAt = clients[i].UpdateAt.Local().Truncate(time.Second)
+	}
+	return clients
 }
