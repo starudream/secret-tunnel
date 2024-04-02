@@ -47,6 +47,7 @@ func UpdateClientActive(id uint, active bool) error {
 
 func UpdateClientOnline(client *Client) error {
 	client.Online = true
+	client.LastOnlineAt = time.Now()
 	return sqlite.DB().Select("ver", "online", "addr", "go", "os", "arch", "hostname", "last_online_at").Updates(client).Error
 }
 
