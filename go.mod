@@ -4,7 +4,7 @@ go 1.22
 
 require (
 	github.com/starudream/go-lib/cobra/v2 v2.0.10
-	github.com/starudream/go-lib/core/v2 v2.0.25
+	github.com/starudream/go-lib/core/v2 v2.0.26
 	github.com/starudream/go-lib/ntfy/v2 v2.0.11
 	github.com/starudream/go-lib/selfupdate/v2 v2.0.6
 	github.com/starudream/go-lib/service/v2 v2.0.6
@@ -51,15 +51,15 @@ require (
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/rogpeppe/go-internal v1.12.0 // indirect
-	github.com/samber/lo v1.39.0 // indirect
+	github.com/samber/lo v1.44.0 // indirect
 	github.com/spf13/cast v1.6.0 // indirect
 	github.com/spf13/cobra v1.8.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	golang.org/x/exp v0.0.0-20240613232115-7f521ea00fb8 // indirect
 	golang.org/x/net v0.26.0 // indirect
 	golang.org/x/sync v0.7.0 // indirect
 	golang.org/x/sys v0.21.0 // indirect
 	golang.org/x/text v0.16.0 // indirect
+	golang.org/x/tools v0.22.0 // indirect
 	golang.org/x/xerrors v0.0.0-20231012003039-104605ab7028 // indirect
 	gorm.io/plugin/soft_delete v1.2.1 // indirect
 	modernc.org/gc/v3 v3.0.0-20240304020402-f0dba7c97c2b // indirect
