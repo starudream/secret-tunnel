@@ -22,6 +22,6 @@ func init() {
 func serviceRun(context.Context) {
 	err := client.Run()
 	if err != nil {
-		slog.Error("client run error: %v", err)
+		slog.Fatal("client run error: %v", err)
 	}
 }
