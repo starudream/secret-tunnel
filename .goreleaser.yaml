@@ -41,19 +41,23 @@ archives:
   - id: stc
     builds:
       - stc
-    format: tar.gz
+    formats:
+      - tar.gz
     name_template: "{{ .Binary }}_v{{ .Version }}_{{ .Os }}_{{ .Arch }}"
     format_overrides:
       - goos: windows
-        format: zip
+        formats:
+          - zip
   - id: sts
     builds:
       - sts
-    format: tar.gz
+    formats:
+      - tar.gz
     name_template: "{{ .Binary }}_v{{ .Version }}_{{ .Os }}_{{ .Arch }}"
     format_overrides:
       - goos: windows
-        format: zip
+        formats:
+          - zip
 
 dockers:
   - goos: linux
